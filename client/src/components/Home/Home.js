@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import "./Home.css";
-//Components
-import Nav from "../Nav/Nav.js";
 class Home extends Component {
     state = {
         searchText: "",
@@ -14,6 +12,7 @@ class Home extends Component {
     }
     handleSearchSubmit = (e) => {
         e.preventDefault();
+        //make request to server here
     }
     render() {
         return (
