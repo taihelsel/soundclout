@@ -1,3 +1,29 @@
 #Home{
-    
+
+}
+#home-head{
+    font-size: 110px;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 25vh 0 0 0;
+    color: #ff9827;
+    text-shadow: -1px 1px 3px #b3b3b3;
+    user-select: none;
+}
+#home-search{
+    width: 100%;
+    text-align: center;
+    margin: 75px 0 0 0;
+}
+#home-search input{
+    padding: 12px 18px;
+    font-size: 25px;
+    width: 75%;
+    max-width: 1080px;
+    border-radius: 4px;
+    border-style:none;
+    border:1px solid #9a9a9a24;
+    box-shadow: 0 0px 10px -2px #00000087;
+    color:grey;
 }
