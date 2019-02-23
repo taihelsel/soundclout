@@ -12,13 +12,17 @@ class Home extends Component {
         _state.searchText = text;
         this.setState(_state);
     }
+    handleSearchSubmit = (e) => {
+        e.preventDefault();
+    }
     render() {
         return (
             <section id="Home">
                 <h1 id="home-head">SoundClout</h1>
-                <div id="home-search">
+                <form id="home-search" onSubmit={this.handleSearchSubmit}>
                     <input type="text" onChange={this.updateSearchText} value={this.state.searchText} />
-                </div>
+                    <input type="submit" style={{display:"none"}}/>
+                </form>
             </section>
         );
     }
