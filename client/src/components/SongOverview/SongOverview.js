@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
 import "./SongOverview.css";
 class SongOverview extends Component {
-    componentWillMount(){
-        this.pingTestRoute();
+    state={
+        songData:{},
     }
-    pingTestRoute = () => {
+    componentWillMount(){
+        this.getSongData();
+    }
+    getSongData = () => {
         fetch("/test",{
-            method:"POST",
+            method: "POST",
         })
         .then((res)=>res.json())
         .then((res)=>{
-            console.log(res);
-        });
+            const _state=this.state;
+            _state.songData = res;
+            this.setState(_state);
+        })
     }
     render() {
         return (
             <section id="SongOverview">
-                SongOverview
+                {JSON.stringify(this.state.songData)}
             </section>
         );
     }
