@@ -5,6 +5,7 @@ const express = require("express"),
 
 //POST
 router.post("/", (req, res) => {
+    const targetUrl = req.body.targetUrl;
     const xhr = new XMLHttpRequest();
     xhr.addEventListener("load", function(){
         const responseText = this.responseText;
@@ -18,7 +19,7 @@ router.post("/", (req, res) => {
         }
         res.send(song);
     });
-    xhr.open("GET", "https://soundcloud.com/eddyzags/mac-miller-objects-in-the");
+    xhr.open("GET", targetUrl);
     xhr.send();
 });
 
