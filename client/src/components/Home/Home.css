@@ -1,5 +1,7 @@
 #Home{
-
+    width:100%;
+    height:100vh;
+    background-color:#3a3a3afc;
 }
 #home-head{
     font-size: 110px;
@@ -7,8 +9,8 @@
     text-align: center;
     margin: 0;
     padding: 25vh 0 0 0;
-    color: #ff9827;
-    text-shadow: -1px 1px 3px #b3b3b3;
+    color: #bd7321;
+    text-shadow: -1px 2px 3px #bf691c;
     user-select: none;
 }
 #home-search{
@@ -24,6 +26,7 @@
     border-radius: 4px;
     border-style:none;
     border:1px solid #9a9a9a24;
-    box-shadow: 0 0px 10px -2px #00000087;
-    color:grey;
+    box-shadow: 0 0px 10px -2px #ffffff;
+    color:black;
+    background-color: #c9c9cc;
 }
