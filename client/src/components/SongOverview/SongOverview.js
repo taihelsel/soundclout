@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import "./SongOverview.css";
+import LoadingWheel from "../LoadingWheel/LoadingWheel.js";
 class SongOverview extends Component {
     state = {
         songData: {},
-        dataFetched:false,
+        dataFetched: false,
     }
     componentWillMount() {
         const url = new URL(window.location.href);
         const u = url.searchParams.get("u");
         const s = url.searchParams.get("s");
-        this.fetchSongData(u,s);
+        this.fetchSongData(u, s);
     }
-    fetchSongData = (u,s) => {
+    fetchSongData = (u, s) => {
         const targetUrl = `https://soundcloud.com/${u}/${s}`;
         fetch("/test", {
             method: 'POST',
@@ -30,13 +31,11 @@ class SongOverview extends Component {
             })
     }
     render() {
-        return this.state.dataFetched? (
+        return this.state.dataFetched ? (
             <section id="SongOverview">
                 {JSON.stringify(this.state.songData)}
             </section>
-        ):(
-            <div>Loading wheel goes here</div>
-        );
+        ) : <LoadingWheel />
     }
 }
 
