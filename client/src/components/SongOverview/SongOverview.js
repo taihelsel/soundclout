@@ -3,6 +3,7 @@ import "./SongOverview.css";
 class SongOverview extends Component {
     state = {
         songData: {},
+        dataFetched:false,
     }
     componentWillMount() {
         const url = new URL(window.location.href);
@@ -23,16 +24,18 @@ class SongOverview extends Component {
             .then((res) => res.json())
             .then((res) => {
                 const _state = this.state;
+                _state.dataFetched = true;
                 _state.songData = res;
                 this.setState(_state);
             })
     }
     render() {
-        console.log("songdata", this.state.songData);
-        return (
+        return this.state.dataFetched? (
             <section id="SongOverview">
                 {JSON.stringify(this.state.songData)}
             </section>
+        ):(
+            <div>Loading wheel goes here</div>
         );
     }
 }
