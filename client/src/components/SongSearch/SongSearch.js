@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import "./Home.css";
-import SongSearch from "../SongSearch/SongSearch.js";
-class Home extends Component {
+import "./SongSearch.css";
+class SongSearch extends Component {
     state = {
         searchText: "",
     }
@@ -22,12 +21,12 @@ class Home extends Component {
     }
     render() {
         return (
-            <section id="Home">
-                <h1 id="home-head">SoundClout</h1>
-                <SongSearch />
-            </section>
+            <form className="song-search" onSubmit={this.handleSearchSubmit}>
+                <input type="text" onChange={this.updateSearchText} value={this.state.searchText} placeholder="Paste in song url and hit Enter" />
+                <input type="submit" style={{ display: "none" }} />
+            </form>
         );
     }
 }
 
-export default Home;
+export default SongSearch;

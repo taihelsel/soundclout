@@ -13,20 +13,14 @@
     text-shadow: -1px 2px 3px #bf691c;
     user-select: none;
 }
-#home-search{
+#Home .song-search{
     width: 100%;
     text-align: center;
     margin: 75px 0 0 0;
 }
-#home-search input{
+#Home .song-search input{
     padding: 12px 18px;
     font-size: 25px;
     width: 75%;
     max-width: 1080px;
-    border-radius: 4px;
-    border-style:none;
-    border:1px solid #9a9a9a24;
-    box-shadow: 0 0px 10px -2px #ffffff;
-    color:black;
-    background-color: #c9c9cc;
 }
