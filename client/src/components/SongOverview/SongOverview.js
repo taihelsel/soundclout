@@ -16,7 +16,7 @@ class SongOverview extends Component {
     }
     fetchSongData = (u, s) => {
         const targetUrl = `https://soundcloud.com/${u}/${s}`;
-        fetch("/test", {
+        fetch("/songdata", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -32,16 +32,16 @@ class SongOverview extends Component {
                 this.setState(_state);
             })
     }
-    renderSongData = () => (
-        <div>
-            {JSON.stringify(this.state.songData)}
-        </div>
-    )
     render() {
         return (
             <section id="SongOverview">
                 <Nav />
-                {this.state.dataFetched ? this.renderSongData() : <LoadingWheel />}
+                {this.state.dataFetched ?
+                    (<div>
+                        {JSON.stringify(this.state.songData)}
+                    </div>)
+                    : (<LoadingWheel />)
+                }
             </section>
         );
     }

@@ -17,7 +17,7 @@ class Home extends Component {
         url = url.replace("https://", "");
         url = url.replace("http://", "");
         const urlArr = url.split("/");
-        window.location.href = `/song?u=${urlArr[1]}&s=${urlArr[2]}`;
+        window.location.href = `/songdata?u=${urlArr[1]}&s=${urlArr[2]}`;
     }
     render() {
         return (

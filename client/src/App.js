@@ -10,7 +10,7 @@ class App extends Component {
       <Router>
         <div style={{ width: "100%", height: "fit-content" }}>
           <Route exact path="/" render={() => <Home /> } />
-          <Route path="/song" render={() => <SongOverview /> } />
+          <Route path="/songdata" render={() => <SongOverview /> } />
         </div>
       </Router>
     );

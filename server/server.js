@@ -24,7 +24,7 @@ app.use(express.static(path.resolve(__dirname, '..', 'client', 'build')));
 //server logging
 app.use(require("morgan")("dev"));
 //routes
-app.use("/test", require("./routes/test"));
+app.use("/songdata", require("./routes/songdata"));
 //sending build
 app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, '..', 'client', 'build', 'index.html'));
