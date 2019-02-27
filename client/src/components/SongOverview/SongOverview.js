@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import "./SongOverview.css";
+//Components
 import LoadingWheel from "../LoadingWheel/LoadingWheel.js";
+import Nav from "../Nav/Nav.js";
 class SongOverview extends Component {
     state = {
         songData: {},
@@ -30,12 +32,18 @@ class SongOverview extends Component {
                 this.setState(_state);
             })
     }
+    renderSongData = () => (
+        <div>
+            {JSON.stringify(this.state.songData)}
+        </div>
+    )
     render() {
-        return this.state.dataFetched ? (
+        return (
             <section id="SongOverview">
-                {JSON.stringify(this.state.songData)}
+                <Nav />
+                {this.state.dataFetched ? this.renderSongData() : <LoadingWheel />}
             </section>
-        ) : <LoadingWheel />
+        );
     }
 }
 
