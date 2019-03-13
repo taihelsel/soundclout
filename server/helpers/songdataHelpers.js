@@ -11,11 +11,11 @@ exports.reqData = (targetUrl, cb) => {
         const song = {
             url: $("meta[property='og:url']").attr("content"),
             title: $("meta[property='twitter:title']").attr("content"),
-            likes: $("meta[property='soundcloud:like_count']").attr("content"),
-            plays: $("meta[property='soundcloud:play_count']").attr("content"),
-            comments: $("meta[property='soundcloud:comments_count']").attr("content"),
+            likes: parseInt($("meta[property='soundcloud:like_count']").attr("content")),
+            plays: parseInt($("meta[property='soundcloud:play_count']").attr("content")),
+            comments: parseInt($("meta[property='soundcloud:comments_count']").attr("content")),
         };
-        cb(err,song);
+        cb(err, song);
     });
     xhr.open("GET", targetUrl);
     xhr.send();

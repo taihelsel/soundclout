@@ -33,12 +33,38 @@ router.post("/", (req, res) => {
                 //update song data
                 // song.updateData({})
                 console.log("UPDATE SONG DATA");
+            } else {
+                console.log("SEND SONG DATA");
+                const recentData = song.data[song.data.length - 1];
+                res.send({
+                    url: song.url,
+                    title: song.title,
+                    likes: recentData.likes,
+                    plays: recentData.plays,
+                    comments: recentData.comments,
+                });
             }
         } else if (!err && !song) {
             //no err - add song to db
             songdataHelpers.reqData(targetUrl, (err, songData) => {
                 if (err === false && songData) {
                     console.log("song", songData);
+                    const newSong = new SongDataModel({
+                        songId: songData.url,
+                        url: songData.url,
+                        title: songData.title,
+                        data: [{
+                            likes: songData.likes,
+                            plays: songData.plays,
+                            comments: songData.comments
+                        }],
+                        lastUpdated: Date.now(),
+                    });
+                    newSong.save((err) => {
+                        if (err) {
+                            console.log("HADLE SONG SAVE ERROR");
+                        } else res.send(songData);
+                    });
                 } else {
                     //return error message
                     console.log("err requesting song data", err);
