@@ -33,31 +33,50 @@ router.post("/", (req, res) => {
             if (song.lastUpdated <= diff) {
                 //update song data
                 songdataHelpers.reqData(song.url, (err, songData) => {
+                    const latestData = song.data[song.data.length - 1];
                     if (err === false && songData) {
-                        console.log("song", songData);
-                        song.data.push({
-                            likes: songData.likes,
-                            plays: songData.plays,
-                            comments: songData.comments
-                        });
-                        song.lastUpdated = Date.now();
-                        song.save((err) => {
-                            if (err) {
-                                console.log("HADLE SONG UPDATE SAVE ERROR");
-                            } else res.send({
-                                url: song.url,
-                                title: song.title,
-                                data: song.data,
+                        if (
+                            songData.likes !== latestData.likes &&
+                            songData.comments !== latestData.comments &&
+                            songData.plays !== latestData.plays
+                        ) {
+                            //data from ajax req does not match existing data. Much update db.
+                            song.data.push({
+                                likes: songData.likes,
+                                plays: songData.plays,
+                                comments: songData.comments
                             });
-                        });
+                            song.lastUpdated = Date.now();
+                            song.save((err) => {
+                                if (err) {
+                                    console.log("HADLE SONG UPDATE SAVE ERROR");
+                                } else res.send({
+                                    url: song.url,
+                                    title: song.title,
+                                    data: song.data,
+                                });
+                            });
+                        } else {
+                            //data from ajax req matches data in db (no reason to save). update lastUpdated and send current data.
+                            song.lastUpdated = Date.now();
+                            song.save((err) => {
+                                if (err) {
+                                    console.log("HADLE SONG UPDATE SAVE ERROR");
+                                } else res.send({
+                                    url: song.url,
+                                    title: song.title,
+                                    data: song.data,
+                                });
+                            });
+                        }
+
                     } else {
                         //return error message
                         console.log("err requesting song data", err);
                     }
                 })
-                console.log("UPDATE SONG DATA");
             } else {
-                console.log("SEND SONG DATA");
+                //sending existing song data.
                 res.send({
                     url: song.url,
                     title: song.title,
