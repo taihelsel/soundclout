@@ -17,6 +17,7 @@ const songDataSchema = new Schema({
         required: true
     },
     data: [{
+        _id: false,
         likes: {
             type: Number,
         },

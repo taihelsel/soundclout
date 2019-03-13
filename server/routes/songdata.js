@@ -3,7 +3,8 @@ const express = require("express"),
     SongDataModel = require(".././models/SongData"),
     mongoose = require("mongoose"),
     songdataHelpers = require("../helpers/songdataHelpers");
-const songUpdateTimer = 3600000;
+// const songUpdateTimer = 3600000; //real timer
+const songUpdateTimer = 30000; //testing timer
 //POST
 router.post("/", (req, res) => {
     const targetUrl = req.body.targetUrl;
@@ -31,17 +32,36 @@ router.post("/", (req, res) => {
             const diff = t - songUpdateTimer;
             if (song.lastUpdated <= diff) {
                 //update song data
-                // song.updateData({})
+                songdataHelpers.reqData(song.url, (err, songData) => {
+                    if (err === false && songData) {
+                        console.log("song", songData);
+                        song.data.push({
+                            likes: songData.likes,
+                            plays: songData.plays,
+                            comments: songData.comments
+                        });
+                        song.lastUpdated = Date.now();
+                        song.save((err) => {
+                            if (err) {
+                                console.log("HADLE SONG UPDATE SAVE ERROR");
+                            } else res.send({
+                                url: song.url,
+                                title: song.title,
+                                data: song.data,
+                            });
+                        });
+                    } else {
+                        //return error message
+                        console.log("err requesting song data", err);
+                    }
+                })
                 console.log("UPDATE SONG DATA");
             } else {
                 console.log("SEND SONG DATA");
-                const recentData = song.data[song.data.length - 1];
                 res.send({
                     url: song.url,
                     title: song.title,
-                    likes: recentData.likes,
-                    plays: recentData.plays,
-                    comments: recentData.comments,
+                    data: song.data,
                 });
             }
         } else if (!err && !song) {
@@ -63,7 +83,11 @@ router.post("/", (req, res) => {
                     newSong.save((err) => {
                         if (err) {
                             console.log("HADLE SONG SAVE ERROR");
-                        } else res.send(songData);
+                        } else res.send({
+                            url: newSong.url,
+                            title: newSong.title,
+                            data: newSong.data,
+                        });
                     });
                 } else {
                     //return error message
