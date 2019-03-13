@@ -27,6 +27,10 @@ const songDataSchema = new Schema({
         comments: {
             type: Number,
         },
+        timeStamp: {
+            type: Date,
+            default: Date.now
+        },
     }],
     lastUpdated: {
         type: Date,

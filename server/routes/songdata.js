@@ -44,7 +44,8 @@ router.post("/", (req, res) => {
                             song.data.push({
                                 likes: songData.likes,
                                 plays: songData.plays,
-                                comments: songData.comments
+                                comments: songData.comments,
+                                timeStamp: Date.now(),
                             });
                             song.lastUpdated = Date.now();
                             song.save((err) => {
@@ -95,7 +96,8 @@ router.post("/", (req, res) => {
                         data: [{
                             likes: songData.likes,
                             plays: songData.plays,
-                            comments: songData.comments
+                            comments: songData.comments,
+                            timeStamp: Date.now(),
                         }],
                         lastUpdated: Date.now(),
                     });
