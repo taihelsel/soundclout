@@ -11,7 +11,7 @@ const port =  process.env.PORT;
 const dbName = process.env.DB_NAME || "soundclout";
 const dbUrl = process.env.MONGODB_URI || "mongodb://localhost/";
 
-//mongoose.connect( dbUrl + dbName, { useNewUrlParser: true });//mongo stuff
+mongoose.connect( dbUrl + dbName, { useNewUrlParser: true });//mongo stuff
 //middleware
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
