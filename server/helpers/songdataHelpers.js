@@ -2,6 +2,8 @@ const cheerio = require('cheerio'),
     XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 exports.reqData = (targetUrl, cb) => {
+    //Need to do error handling somewhere in here.
+    let err = false; // <- return error message in here
     const xhr = new XMLHttpRequest();
     xhr.addEventListener("load", function () {
         const responseText = this.responseText;
@@ -13,7 +15,7 @@ exports.reqData = (targetUrl, cb) => {
             plays: $("meta[property='soundcloud:play_count']").attr("content"),
             comments: $("meta[property='soundcloud:comments_count']").attr("content"),
         };
-        cb(song);
+        cb(err,song);
     });
     xhr.open("GET", targetUrl);
     xhr.send();

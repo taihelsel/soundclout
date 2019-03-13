@@ -26,7 +26,7 @@ router.post("/", (req, res) => {
             //return error message
             console.log("song err " + err);
         } else if (!err && song) {
-            //song is in database
+            //no err - song is in database
             const t = Date.now();
             const diff = t - songUpdateTimer;
             if (song.lastUpdated <= diff) {
@@ -36,8 +36,13 @@ router.post("/", (req, res) => {
             }
         } else if (!err && !song) {
             //no err - add song to db
-            songdataHelpers.reqData(targetUrl,(songData)=>{
-                console.log("song",songData);
+            songdataHelpers.reqData(targetUrl, (err, songData) => {
+                if (err === false && songData) {
+                    console.log("song", songData);
+                } else {
+                    //return error message
+                    console.log("err requesting song data", err);
+                }
             })
         }
     });
