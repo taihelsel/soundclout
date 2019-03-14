@@ -42,6 +42,12 @@ class SongOverview extends Component {
         const day = d.getDate();
         let min = d.getMinutes(), h = d.getHours(), label = "AM";
         switch (true) {
+            case min < 10:
+                min = min.toString();
+                min = "0" + min;
+            case h < 1:
+                h = 12;
+                break;
             case h >= 12:
                 label = "PM";
             case h > 12:
@@ -111,7 +117,7 @@ class SongOverview extends Component {
                             scales: {
                                 yAxes: [{
                                     ticks: {
-                                        autoSkip:true,
+                                        autoSkip: true,
                                     }
                                 }]
                             },
