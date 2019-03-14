@@ -7,7 +7,7 @@ import Nav from "../Nav/Nav.js";
 class SongOverview extends Component {
     state = {
         songData: {},
-        graphData: {},
+        graphData: [],
         dataFetched: false,
     }
     componentWillMount() {
@@ -36,45 +36,73 @@ class SongOverview extends Component {
             });
     }
     generateGraphData = (songData) => {
-        const playsDataset = {
-            label: "Plays",
-            data: [],
-            borderColor: "#3e95cd",
-            fill: false
+        const labels = []; //will contain the timestamps
+        const playsGraph = {
+            labels,
+            datasets: [{
+                label: "Plays",
+                data: [],
+                borderColor: "#3e95cd",
+                fill: false
+            }],
         };
-        const likesDataSet = {
-            label: "Likes",
-            data: [],
-            borderColor: "#8e5ea2",
-            fill: false
+        const likesGraph = {
+            labels,
+            datasets: [{
+                label: "Likes",
+                data: [],
+                borderColor: "#8e5ea2",
+                fill: false
+            }],
         };
-        const commentsDataSet = {
-            label: "Comments",
-            data: [],
-            borderColor: "#3cba9f",
-            fill: false
-        };
-        const graphData = {
-            labels: [], //will contain the timestamps
-            datasets: [playsDataset, likesDataSet, commentsDataSet], //will contain the data (label,color,data history) for each item (likes,comments, etc)
-            options: {
-                title: {
-                    display: true,
-                    text: "Song History"
-                }
-            }
+        const commentsGraph = {
+            labels,
+            datasets: [{
+                label: "Comments",
+                data: [],
+                borderColor: "#3cba9f",
+                fill: false
+            }],
         };
         const data = songData.data;
         for (let i = 0; i < data.length; i++) {
             let x = data[i];
             //adding timestamp
-            graphData.labels.push(x.timeStamp);
+            labels.push(x.timeStamp);
             //updating datasets
-            playsDataset.data.push(x.plays);
-            likesDataSet.data.push(x.likes);
-            commentsDataSet.data.push(x.comments);
+            playsGraph.datasets[0].data.push(x.plays);
+            likesGraph.datasets[0].data.push(x.likes);
+            commentsGraph.datasets[0].data.push(x.comments);
         }
-        return graphData;
+        return [
+            playsGraph,
+            likesGraph,
+            commentsGraph,
+        ];
+    }
+    renderGraphs = () => {
+        const _state = this.state;
+        const graphs = _state.graphData.map((data) => {
+            return (
+                <li>
+                    <Line
+                        data={data}
+                        width={null}
+                        height={null}
+                        options={{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                        }}
+                    />
+                </li>
+            )
+
+        });
+        return (
+            <ul className="graphs-wrapper">
+                {graphs}
+            </ul>
+        );
     }
     render() {
         return (
@@ -82,12 +110,8 @@ class SongOverview extends Component {
                 <Nav />
                 {this.state.dataFetched ?
                     (<div>
-                        {JSON.stringify(this.state.songData)}
-                        <Line
-                            data={this.state.graphData}
-                            width={100}
-                            height={50}
-                        />
+                        {this.renderGraphs()}
+
                     </div>)
                     : (<LoadingWheel />)
                 }

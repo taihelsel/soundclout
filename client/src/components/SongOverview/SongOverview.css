@@ -1,0 +1,13 @@
+.graphs-wrapper{
+    margin:0;
+    padding:0;
+    list-style: none;
+    width:100%;
+    height:fit-content;
+    text-align:center;
+}
+.graphs-wrapper li{
+    width:30%;
+    height:450px;
+    display:inline-block;
+}
