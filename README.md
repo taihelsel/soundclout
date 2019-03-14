@@ -25,3 +25,19 @@ MONGODB_URI=
 - Display bookmarked songs on homepage
 - Display recently updated songs on homepage
 - Display songs with the largest change by the hour on the homepage.
+
+# Tech Used
+- npm
+- HTML
+- CSS
+- JavaScript
+- ReactJS
+- React Router
+- Chart.js
+- React Chart.js 2
+- Node.js
+- Mongoose
+- MongoDB
+- Express
+- xmlhttprequest lib
+- cheerio

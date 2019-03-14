@@ -30,7 +30,7 @@ class SongOverview extends Component {
                 _state.dataFetched = true;
                 _state.songData = res;
                 this.setState(_state);
-            })
+            });
     }
     render() {
         return (
