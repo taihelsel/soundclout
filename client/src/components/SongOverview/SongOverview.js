@@ -6,9 +6,9 @@ import LoadingWheel from "../LoadingWheel/LoadingWheel.js";
 import Nav from "../Nav/Nav.js";
 class SongOverview extends Component {
     state = {
-        songData: {},
-        graphData: [],
-        dataFetched: false,
+        songData: {}, //response from the back end containing all the song information
+        graphData: [], //an array of datasets formatted for the react-chartjs-2
+        dataFetched: false, //false will render loading wheel. true renders songoverview
     }
     componentWillMount() {
         const url = new URL(window.location.href);
@@ -96,7 +96,6 @@ class SongOverview extends Component {
                     />
                 </li>
             )
-
         });
         return (
             <ul className="graphs-wrapper">

@@ -28,8 +28,7 @@ const songDataSchema = new Schema({
             type: Number,
         },
         timeStamp: {
-            type: Date,
-            default: Date.now
+            type: Number,
         },
     }],
     lastUpdated: {
