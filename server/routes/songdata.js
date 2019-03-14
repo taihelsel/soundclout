@@ -8,19 +8,6 @@ const songUpdateTimer = 30000; //testing timer
 //POST
 router.post("/", (req, res) => {
     const targetUrl = req.body.targetUrl;
-    /*
-        - check if song is in db
-            if(song is in database) then
-                if(song needs to be updated) then
-                    - fetch song data
-                    - update song data in db
-            else
-                add song to database
-        - then send songdata to front end
-    */
-
-
-
     //checking database for song
     SongDataModel.findOne({ songId: targetUrl }, function (err, song) {
         if (err) {
@@ -117,8 +104,6 @@ router.post("/", (req, res) => {
             })
         }
     });
-
-
 });
 
 module.exports = router;

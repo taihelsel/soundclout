@@ -41,13 +41,4 @@ const songDataSchema = new Schema({
         default: Date.now
     }
 });
-songDataSchema.statics.updateData = function (songId, data, cb) {
-    return this.findOneAndUpdate(
-        { songId },
-        {
-            $push: { data },
-            $set: { lastUpdated: Date.now() }
-        },
-        cb);
-};
 module.exports = mongoose.model("SongData", songDataSchema);
