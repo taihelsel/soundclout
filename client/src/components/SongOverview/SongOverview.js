@@ -67,7 +67,8 @@ class SongOverview extends Component {
             datasets: [{
                 label: "Plays",
                 data: [],
-                borderColor: "#3e95cd",
+                borderColor: "#FF7E47",
+                backgroundColor: "#ff7e47cc",
                 fill: false
             }],
         };
@@ -76,7 +77,8 @@ class SongOverview extends Component {
             datasets: [{
                 label: "Likes",
                 data: [],
-                borderColor: "#8e5ea2",
+                borderColor: "#2283c1",
+                backgroundColor: "#2283c1cc",
                 fill: false
             }],
         };
@@ -85,7 +87,8 @@ class SongOverview extends Component {
             datasets: [{
                 label: "Comments",
                 data: [],
-                borderColor: "#3cba9f",
+                borderColor: "#787878",
+                backgroundColor: "#787878cc",
                 fill: false
             }],
         };
