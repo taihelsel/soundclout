@@ -7,7 +7,9 @@ const express = require("express"),
 const songUpdateTimer = 30000; //testing timer
 //POST
 router.post("/", (req, res) => {
-    const targetUrl = req.body.targetUrl;
+    const targetUrl = req.body.targetUrl.split("?")[0];
+    const t = Date.now();
+    const diff = t - songUpdateTimer;
     //checking database for song
     SongDataModel.findOne({ songId: targetUrl }, function (err, song) {
         if (err) {
@@ -15,8 +17,6 @@ router.post("/", (req, res) => {
             console.log("song err " + err);
         } else if (!err && song) {
             //no err - song is in database
-            const t = Date.now();
-            const diff = t - songUpdateTimer;
             if (song.lastUpdated <= diff) {
                 //update song data
                 songdataHelpers.reqData(song.url, (err, songData) => {
@@ -32,12 +32,12 @@ router.post("/", (req, res) => {
                                 likes: songData.likes,
                                 plays: songData.plays,
                                 comments: songData.comments,
-                                timeStamp: Date.now(),
+                                timeStamp: parseInt(t),
                             });
-                            song.lastUpdated = Date.now();
+                            song.lastUpdated = t;
                             song.save((err) => {
                                 if (err) {
-                                    console.log("HADLE SONG UPDATE SAVE ERROR");
+                                    console.log("HADLE SONG UPDATE SAVE ERROR", err);
                                 } else res.send({
                                     url: song.url,
                                     title: song.title,
@@ -46,10 +46,10 @@ router.post("/", (req, res) => {
                             });
                         } else {
                             //data from ajax req matches data in db (no reason to save). update lastUpdated and send current data.
-                            song.lastUpdated = Date.now();
+                            song.lastUpdated = t;
                             song.save((err) => {
                                 if (err) {
-                                    console.log("HADLE SONG UPDATE SAVE ERROR");
+                                    console.log("HADLE SONG UPDATE SAVE ERROR", err);
                                 } else res.send({
                                     url: song.url,
                                     title: song.title,
@@ -84,13 +84,13 @@ router.post("/", (req, res) => {
                             likes: songData.likes,
                             plays: songData.plays,
                             comments: songData.comments,
-                            timeStamp: Date.now(),
+                            timeStamp: parseInt(t),
                         }],
-                        lastUpdated: Date.now(),
+                        lastUpdated: t,
                     });
                     newSong.save((err) => {
                         if (err) {
-                            console.log("HADLE SONG SAVE ERROR");
+                            console.log("HADLE SONG SAVE ERROR", err);
                         } else res.send({
                             url: newSong.url,
                             title: newSong.title,
