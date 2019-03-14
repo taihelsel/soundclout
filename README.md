@@ -26,6 +26,7 @@ MONGODB_URI=
 - Display recently updated songs on homepage
 - Display songs with the largest change by the hour on the homepage.
 - Set server req timer back to original state.
+- format timeStamp date on back-end to be easily readable on front-end
 # Tech Used
 - npm
 - HTML

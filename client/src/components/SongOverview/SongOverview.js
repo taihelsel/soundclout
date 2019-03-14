@@ -110,6 +110,7 @@ class SongOverview extends Component {
                 <Nav />
                 {this.state.dataFetched ?
                     (<div>
+                        <h1 id="song-head">{this.state.songData.title}</h1>
                         {this.renderGraphs()}
 
                     </div>)
