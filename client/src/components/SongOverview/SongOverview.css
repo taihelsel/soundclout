@@ -1,9 +1,11 @@
-#song-head{
+#song-iframe-wrapper{
     width:100%;
-    margin:0;
-    padding:0;
-    text-align: center;
-    font-size:32px;  
+    text-align:center;
+    margin:3.5em 0;
+}
+#song-iframe{
+    width:75%;
+    display:inline-block;
 }
 .graphs-wrapper{
     margin:0;

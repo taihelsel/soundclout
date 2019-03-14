@@ -108,6 +108,13 @@ class SongOverview extends Component {
                         options={{
                             responsive: true,
                             maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        autoSkip:true,
+                                    }
+                                }]
+                            },
                         }}
                     />
                 </li>
@@ -125,9 +132,10 @@ class SongOverview extends Component {
                 <Nav />
                 {this.state.dataFetched ?
                     (<div>
-                        <h1 id="song-head">{this.state.songData.title}</h1>
+                        <div id="song-iframe-wrapper">
+                            <iframe id="song-iframe" scrolling="no" frameborder="no" allow="autoplay" src={`https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${this.state.songData.songId}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true`}></iframe>
+                        </div>
                         {this.renderGraphs()}
-
                     </div>)
                     : (<LoadingWheel />)
                 }
