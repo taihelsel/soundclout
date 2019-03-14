@@ -20,3 +20,17 @@
     height:450px;
     display:inline-block;
 }
+.timer-wrapper{
+    width:100%;
+    position: absolute;
+    bottom:0;
+    background-color:#ececec;
+}
+.timer-label{
+    width:100%;
+    text-align:center;
+    margin:0;
+    padding:0;
+    color:grey;
+    font-weight: lighter;
+}
