@@ -11,7 +11,7 @@ router.post("/", (req, res) => {
     const t = Date.now();
     const diff = t - songUpdateTimer;
     //checking database for song
-    SongDataModel.findOne({ songId: targetUrl }, function (err, song) {
+    SongDataModel.findOne({ url: targetUrl }, function (err, song) {
         if (err) {
             //return error message
             console.log("song err " + err);
@@ -39,6 +39,7 @@ router.post("/", (req, res) => {
                                 if (err) {
                                     console.log("HADLE SONG UPDATE SAVE ERROR", err);
                                 } else res.send({
+                                    songId: song.songId,
                                     url: song.url,
                                     title: song.title,
                                     data: song.data,
@@ -51,6 +52,7 @@ router.post("/", (req, res) => {
                                 if (err) {
                                     console.log("HADLE SONG UPDATE SAVE ERROR", err);
                                 } else res.send({
+                                    songId: song.songId,
                                     url: song.url,
                                     title: song.title,
                                     data: song.data,
@@ -66,6 +68,7 @@ router.post("/", (req, res) => {
             } else {
                 //sending existing song data.
                 res.send({
+                    songId: song.songId,
                     url: song.url,
                     title: song.title,
                     data: song.data,
@@ -77,7 +80,7 @@ router.post("/", (req, res) => {
                 if (err === false && songData) {
                     console.log("song", songData);
                     const newSong = new SongDataModel({
-                        songId: songData.url,
+                        songId: songData.songId,
                         url: songData.url,
                         title: songData.title,
                         data: [{
@@ -92,6 +95,7 @@ router.post("/", (req, res) => {
                         if (err) {
                             console.log("HADLE SONG SAVE ERROR", err);
                         } else res.send({
+                            songId: newSong.songId,
                             url: newSong.url,
                             title: newSong.title,
                             data: newSong.data,

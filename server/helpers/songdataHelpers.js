@@ -9,12 +9,14 @@ exports.reqData = (targetUrl, cb) => {
         const responseText = this.responseText;
         const $ = cheerio.load(responseText);
         const song = {
+            songId: $("meta[property='twitter:app:url:iphone']").attr("content"),
             url: $("meta[property='og:url']").attr("content"),
             title: $("meta[property='twitter:title']").attr("content"),
             likes: parseInt($("meta[property='soundcloud:like_count']").attr("content")),
             plays: parseInt($("meta[property='soundcloud:play_count']").attr("content")),
             comments: parseInt($("meta[property='soundcloud:comments_count']").attr("content")),
         };
+        song.songId = song.songId.replace("soundcloud://sounds:","");
         cb(err, song);
     });
     xhr.open("GET", targetUrl);

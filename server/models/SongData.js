@@ -4,9 +4,7 @@ const mongoose = require("mongoose"),
 const songDataSchema = new Schema({
     songId: {
         type: String,
-        trim: true,
         required: true,
-        unique: true,
     },
     title: {
         type: String,
@@ -14,7 +12,9 @@ const songDataSchema = new Schema({
     },
     url: {
         type: String,
-        required: true
+        trim: true,
+        required: true,
+        unique: true,
     },
     data: [{
         _id: false,
