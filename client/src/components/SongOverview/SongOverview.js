@@ -35,6 +35,22 @@ class SongOverview extends Component {
                 this.setState(_state);
             });
     }
+    formatDate = (ms) => {
+        let d = new Date(ms);
+        const year = d.getFullYear();
+        const month = d.getMonth() + 1;
+        const day = d.getDate();
+        let min = d.getMinutes(), h = d.getHours(), label = "AM";
+        switch (true) {
+            case h >= 12:
+                label = "PM";
+            case h > 12:
+                h -= 12;
+                break;
+        }
+
+        return `${h}:${min}${label} ${month}/${day}/${year.toString().substring(2)}`;
+    }
     generateGraphData = (songData) => {
         const labels = []; //will contain the timestamps
         const playsGraph = {
@@ -68,7 +84,7 @@ class SongOverview extends Component {
         for (let i = 0; i < data.length; i++) {
             let x = data[i];
             //adding timestamp
-            labels.push(x.timeStamp);
+            labels.push(this.formatDate(x.timeStamp));
             //updating datasets
             playsGraph.datasets[0].data.push(x.plays);
             likesGraph.datasets[0].data.push(x.likes);
