@@ -12,3 +12,16 @@ MONGODB_URI=
 - run "npm install"
 - cd .././server
 - run "npm run-script buildrun"
+
+
+# TODO 
+- Error handling on songdata req to soundcloud
+- Error handling on songdata db query
+- Error messages being sent to front-end
+- Graph displaying song data over time
+- Timer on front-end showing when songdata will be updated next
+- iframe containing acutal sondcloud song in the songoverview component.
+- Allow users to bookmark songs (store in localstore or cookies)
+- Display bookmarked songs on homepage
+- Display recently updated songs on homepage
+- Display songs with the largest change by the hour on the homepage.
