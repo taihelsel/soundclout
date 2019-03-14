@@ -43,6 +43,8 @@ router.post("/", (req, res) => {
                                     url: song.url,
                                     title: song.title,
                                     data: song.data,
+                                    lastUpdated: song.lastUpdated,
+                                    offsetTimer: songUpdateTimer,
                                 });
                             });
                         } else {
@@ -56,6 +58,8 @@ router.post("/", (req, res) => {
                                     url: song.url,
                                     title: song.title,
                                     data: song.data,
+                                    lastUpdated: song.lastUpdated,
+                                    offsetTimer: songUpdateTimer,
                                 });
                             });
                         }
@@ -72,6 +76,8 @@ router.post("/", (req, res) => {
                     url: song.url,
                     title: song.title,
                     data: song.data,
+                    lastUpdated: song.lastUpdated,
+                    offsetTimer: songUpdateTimer,
                 });
             }
         } else if (!err && !song) {
@@ -99,6 +105,8 @@ router.post("/", (req, res) => {
                             url: newSong.url,
                             title: newSong.title,
                             data: newSong.data,
+                            lastUpdated: newSong.lastUpdated,
+                            offsetTimer: songUpdateTimer,
                         });
                     });
                 } else {

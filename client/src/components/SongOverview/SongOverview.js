@@ -4,6 +4,7 @@ import "./SongOverview.css";
 //Components
 import LoadingWheel from "../LoadingWheel/LoadingWheel.js";
 import Nav from "../Nav/Nav.js";
+import Timer from "../Timer/Timer.js";
 class SongOverview extends Component {
     state = {
         songData: {}, //response from the back end containing all the song information
@@ -28,8 +29,10 @@ class SongOverview extends Component {
         })
             .then((res) => res.json())
             .then((res) => {
+                let d = new Date(res.lastUpdated);
                 const _state = this.state;
                 _state.dataFetched = true;
+                res.lastUpdated = d.getTime();
                 _state.songData = res;
                 _state.graphData = this.generateGraphData(res);
                 this.setState(_state);
@@ -142,6 +145,7 @@ class SongOverview extends Component {
                             <iframe id="song-iframe" scrolling="no" frameborder="no" allow="autoplay" src={`https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${this.state.songData.songId}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true`}></iframe>
                         </div>
                         {this.renderGraphs()}
+                        <Timer preLabel={"Checking for update in "} postLabel={" seconds"} startTime={Date.now()} endTime={this.state.songData.lastUpdated + this.state.songData.offsetTimer} />
                     </div>)
                     : (<LoadingWheel />)
                 }
