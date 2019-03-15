@@ -25,6 +25,9 @@ class Home extends Component {
             <section id="Home">
                 <h1 id="home-head">SoundClout</h1>
                 <SongSearch />
+                {
+                    localStorage.getItem("songHistory") !== null ? JSON.parse(localStorage.getItem("songHistory")).map(item => <div>{JSON.stringify(item)}</div>) : ""
+                }
             </section>
         );
     }

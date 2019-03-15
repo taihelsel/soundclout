@@ -35,8 +35,27 @@ class SongOverview extends Component {
                 res.lastUpdated = d.getTime();
                 _state.songData = res;
                 _state.graphData = this.generateGraphData(res);
+                this.addSongToHistory(res);
                 this.setState(_state);
             });
+    }
+    addSongToHistory = (songData) => {
+        // check if key is in store
+        if (localStorage.getItem("songHistory") === null) localStorage.setItem("songHistory", JSON.stringify([{ title: songData.title, url: songData.url }]));
+        else {
+            const newStore = JSON.parse(localStorage.getItem("songHistory"));
+            // preventing duplicates.
+            for (let i = 0; i < newStore.length; i++) {
+                const x = newStore[i];
+                if (x.title === songData.title && x.url === songData.url) {
+                    //remove and let code continue
+                    newStore.splice(i, 1);
+                }
+            }
+            newStore.unshift({ title: songData.title, url: songData.url });
+            if (newStore.length > 10) newStore.pop();
+            localStorage.setItem("songHistory", JSON.stringify(newStore));
+        }
     }
     formatDate = (ms) => {
         let d = new Date(ms);
