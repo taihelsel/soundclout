@@ -24,3 +24,39 @@
     width: 75%;
     max-width: 1080px;
 }
+.song-history{
+   margin: 45px 0;
+   padding:0;
+   list-style:none; 
+   width:100%;
+   text-align: center;
+}
+.song-history-head{
+    font-weight: normal;
+    font-size:25px;
+    color: #ececec;
+    margin:30px 0;
+    padding:0;
+    width:100%;
+    text-align: center;
+}
+.song-history:last-child{
+    border-bottom: none!important;
+}
+.song-history li{
+    width:52%;
+    margin: 0;
+    display:inline-block;;
+    text-align:center;
+    background-color:#80808014;
+    border-bottom: 1px solid #31303078;
+}
+.song-history li h1{
+    font-weight: normal;
+    font-size:20px;
+    color:#bfbfbf;
+    display:inline-block;
+    margin:0;
+    padding:10px 0;
+    cursor:pointer;
+}
