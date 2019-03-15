@@ -18,11 +18,6 @@ MONGODB_URI=
 - Error handling on songdata req to soundcloud
 - Error handling on songdata db query
 - Error messages being sent to front-end
-- Allow users to bookmark songs (store in localstore or cookies)
-- Display bookmarked songs on homepage
-- Display recently updated songs on homepage
-- Display songs with the largest change by the hour on the homepage.
-- If a song has data collected over a large peroid of time group the dataset by day.
 # Tech Used
 - npm
 - HTML
