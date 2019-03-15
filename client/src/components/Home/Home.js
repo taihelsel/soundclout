@@ -26,17 +26,18 @@ class Home extends Component {
         window.location.href = `/songdata?u=${url[1]}&s=${url[2]}`;
     }
     renderRecentlyViewed = () => (
-        <ul className="song-history">
-            <h1 className="song-history-head">Recently Viewed Songs</h1>
-            {localStorage.getItem("songHistory") !== null ? JSON.parse(localStorage.getItem("songHistory")).map(item =>
-                <li>
-                    <h1 onClick={() => { this.handleHistoryClick(item.url) }}>
-                        {item.title}
-                    </h1>
-                </li>
-            ) : ""}
-        </ul>
-    );
+        localStorage.getItem("songHistory") !== null ? (
+            <ul className="song-history">
+                <h1 className="song-history-head">Recently Viewed Songs</h1>
+                {JSON.parse(localStorage.getItem("songHistory")).map(item =>
+                    <li>
+                        <h1 onClick={() => { this.handleHistoryClick(item.url) }}>
+                            {item.title}
+                        </h1>
+                    </li>
+                )}
+            </ul>
+        ) : "");
     render() {
         return (
             <section id="Home">
