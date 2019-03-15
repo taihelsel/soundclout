@@ -58,18 +58,12 @@ class SongOverview extends Component {
         }
     }
     formatDate = (ms) => {
-        let d = new Date(ms);
-        const year = d.getFullYear();
-        const month = d.getMonth() + 1;
-        const day = d.getDate();
-        let min = d.getMinutes(), h = d.getHours(), label = "AM";
-        if (min < 10) {
-            min = min.toString();
-            min = "0" + min;
-        }
-        if (h < 1) h = 12;
-        else if (h >= 12) label = "PM";
-        else if (h >= 13) h -= 12;
+        const d = new Date(ms), year = d.getFullYear(), month = d.getMonth() + 1, day = d.getDate();
+        let min = d.getMinutes(), h = d.getHours(), label = h >= 12 ? "PM" : "AM";
+
+        if (min < 10) min = "0" + min;
+        h = h < 1 ? h = 12 : h >= 13 ? h -= 12 : h;
+        
         return `${h}:${min}${label} ${month}/${day}/${year.toString().substring(2)}`;
     }
     generateGraphData = (songData) => {
