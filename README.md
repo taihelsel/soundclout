@@ -18,6 +18,11 @@ MONGODB_URI=
 - Error handling on songdata req to soundcloud
 - Error handling on songdata db query
 - Error messages being sent to front-end
+- Implement redux
+- Create a react-native version that requests data from this version 
+- Automatically check for new data when timer expires
+
+
 # Tech Used
 - npm
 - HTML
