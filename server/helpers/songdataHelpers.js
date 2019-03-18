@@ -64,9 +64,9 @@ exports.reqRelatedSongs = (songId, limit, cb) => {
                 songId: songJSON.id,
                 url: songJSON["permalink_url"],
                 title: songJSON.title,
-                likes: parseInt(responseJSON["likes_count"]),
-                plays: parseInt(responseJSON["playback_count"]),
-                comments: parseInt(responseJSON["comment_count"]),
+                likes: parseInt(songJSON["likes_count"]),
+                plays: parseInt(songJSON["playback_count"]),
+                comments: parseInt(songJSON["comment_count"]),
             }
         });
         cb(err, songs);

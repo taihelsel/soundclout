@@ -38,14 +38,80 @@ router.post("/", (req, res) => {
                             song.save((err) => {
                                 if (err) {
                                     console.log("HADLE SONG UPDATE SAVE ERROR", err);
-                                } else res.send({
-                                    songId: song.songId,
-                                    url: song.url,
-                                    title: song.title,
-                                    data: song.data,
-                                    lastUpdated: song.lastUpdated,
-                                    offsetTimer: songUpdateTimer,
-                                });
+                                } else {
+                                    // Going to request related songs here.
+                                    const dataToBeSent = { //this obj is the originally requested data and will  be sent to front end after checking for related songs
+                                        songId: song.songId,
+                                        url: song.url,
+                                        title: song.title,
+                                        data: song.data,
+                                        lastUpdated: song.lastUpdated,
+                                        offsetTimer: songUpdateTimer,
+                                    };
+                                    const relatedSongLimit = 10;
+                                    songdataHelpers.reqRelatedSongs(song.songId, relatedSongLimit, (err, relatedSongList) => {
+                                        if (err === false && relatedSongList.length > 0) {
+                                            console.log("has related song list");
+                                            relatedSongList.forEach((songData) => {
+                                                console.log("related song", songData);
+                                                SongDataModel.findOne({ url: songData.url }, function (err, relatedSong) {
+                                                    if (err) {
+                                                        //return error message
+                                                        console.log("related song err " + err);
+                                                    } else if (!err && relatedSong) {
+                                                        const latestData = relatedSong.data[relatedSong.data.length - 1];
+                                                        //no err - song is in database
+                                                        if (
+                                                            songData.likes !== latestData.likes &&
+                                                            songData.comments !== latestData.comments &&
+                                                            songData.plays !== latestData.plays
+                                                        ) {
+                                                            // New data from request. Time to update database.
+                                                            relatedSong.data.push({
+                                                                likes: songData.likes,
+                                                                plays: songData.plays,
+                                                                comments: songData.comments,
+                                                                timeStamp: parseInt(t),
+                                                            });
+                                                            relatedSong.lastUpdated = t;
+                                                            relatedSong.save((err) => {
+                                                                if (err) {
+                                                                    console.log("HADLE RELATED SONG UPDATE SAVE ERROR", err);
+                                                                } else {
+                                                                    console.log("related song updated");
+                                                                }
+                                                            });
+                                                        }
+                                                    } else if (!err && !relatedSong) {
+                                                        //no err - add song to db
+                                                        const newSong = new SongDataModel({
+                                                            songId: songData.songId,
+                                                            url: songData.url,
+                                                            title: songData.title,
+                                                            data: [{
+                                                                likes: songData.likes,
+                                                                plays: songData.plays,
+                                                                comments: songData.comments,
+                                                                timeStamp: parseInt(t),
+                                                            }],
+                                                            lastUpdated: t,
+                                                        });
+                                                        newSong.save((err) => {
+                                                            if (err) {
+                                                                console.log("HADLE SONG SAVE ERROR", err);
+                                                            } else console.log("related song saved");
+                                                        });
+                                                    }
+                                                });
+
+                                            });
+                                        } else {
+                                            //return error message
+                                            console.log("err requesting song data", err);
+                                        }
+                                        res.send(dataToBeSent);
+                                    });
+                                }
                             });
                         } else {
                             // No new data from request. 
