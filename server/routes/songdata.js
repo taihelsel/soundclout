@@ -4,7 +4,7 @@ const express = require("express"),
     mongoose = require("mongoose"),
     songdataHelpers = require("../helpers/songdataHelpers");
 // const songUpdateTimer = 3600000; //1 hour timer
- const songUpdateTimer = 1800000; //30 min timer
+const songUpdateTimer = 1800000; //30 min timer
 // const songUpdateTimer = 30000; //30 sec timer
 //POST
 router.post("/", (req, res) => {
@@ -23,23 +23,11 @@ router.post("/", (req, res) => {
                 songdataHelpers.reqSong(song.songId, (err, songData) => {
                     const latestData = song.data[song.data.length - 1];
                     if (err === false && songData) {
-                        if (
-                            songData.likes !== latestData.likes &&
-                            songData.comments !== latestData.comments &&
-                            songData.plays !== latestData.plays
-                        ) {
+                        if (songData.likes !== latestData.likes && songData.comments !== latestData.comments && songData.plays !== latestData.plays) {
                             // New data from request. Time to update database.
-                            song.data.push({
-                                likes: songData.likes,
-                                plays: songData.plays,
-                                comments: songData.comments,
-                                timeStamp: parseInt(t),
-                            });
-                            song.lastUpdated = t;
-                            song.save((err) => {
-                                if (err) {
-                                    console.log("HADLE SONG UPDATE SAVE ERROR", err);
-                                } else {
+                            songdataHelpers.updateSongInDB(song, songData, (err, song) => {
+                                if (err) console.log("error updating song in database.", err);
+                                else {
                                     // Going to request related songs here.
                                     const dataToBeSent = { //this obj is the originally requested data and will  be sent to front end after checking for related songs
                                         songId: song.songId,
@@ -62,45 +50,18 @@ router.post("/", (req, res) => {
                                                     } else if (!err && relatedSong) {
                                                         const latestData = relatedSong.data[relatedSong.data.length - 1];
                                                         //no err - song is in database
-                                                        if (
-                                                            songData.likes !== latestData.likes &&
-                                                            songData.comments !== latestData.comments &&
-                                                            songData.plays !== latestData.plays
-                                                        ) {
+                                                        if (songData.likes !== latestData.likes && songData.comments !== latestData.comments && songData.plays !== latestData.plays) {
                                                             // New data from request. Time to update database.
-                                                            relatedSong.data.push({
-                                                                likes: songData.likes,
-                                                                plays: songData.plays,
-                                                                comments: songData.comments,
-                                                                timeStamp: parseInt(t),
-                                                            });
-                                                            relatedSong.lastUpdated = t;
-                                                            relatedSong.save((err) => {
-                                                                if (err) {
-                                                                    console.log("HADLE RELATED SONG UPDATE SAVE ERROR", err);
-                                                                } else {
-                                                                    console.log(relatedSong.title + " was updated");
-                                                                }
+                                                            songdataHelpers.updateSongInDB(relatedSong, songData, (err, song) => {
+                                                                if (err) console.log("error updating related song in database");
+                                                                else console.log(song.title, "was updated");
                                                             });
                                                         }
                                                     } else if (!err && !relatedSong) {
                                                         //no err - add song to db
-                                                        const newSong = new SongDataModel({
-                                                            songId: songData.songId,
-                                                            url: songData.url,
-                                                            title: songData.title,
-                                                            data: [{
-                                                                likes: songData.likes,
-                                                                plays: songData.plays,
-                                                                comments: songData.comments,
-                                                                timeStamp: parseInt(t),
-                                                            }],
-                                                            lastUpdated: t,
-                                                        });
-                                                        newSong.save((err) => {
-                                                            if (err) {
-                                                                console.log("HADLE SONG SAVE ERROR", err);
-                                                            } else console.log("related song saved");
+                                                        songdataHelpers.addNewSongToDB(songData, songUpdateTimer, SongDataModel, (err, data) => {
+                                                            if (err) console.log("error adding new song to database");
+                                                            else res.send(data);
                                                         });
                                                     }
                                                 });
@@ -113,7 +74,7 @@ router.post("/", (req, res) => {
                                         res.send(dataToBeSent);
                                     });
                                 }
-                            });
+                            })
                         } else {
                             // No new data from request. 
                             // Just update time stamp and then send data from db.
@@ -154,29 +115,9 @@ router.post("/", (req, res) => {
             songdataHelpers.initialSongReq(targetUrl, (err, songData) => {
                 if (err === false && songData) {
                     console.log("song", songData);
-                    const newSong = new SongDataModel({
-                        songId: songData.songId,
-                        url: songData.url,
-                        title: songData.title,
-                        data: [{
-                            likes: songData.likes,
-                            plays: songData.plays,
-                            comments: songData.comments,
-                            timeStamp: parseInt(t),
-                        }],
-                        lastUpdated: t,
-                    });
-                    newSong.save((err) => {
-                        if (err) {
-                            console.log("HADLE SONG SAVE ERROR", err);
-                        } else res.send({
-                            songId: newSong.songId,
-                            url: newSong.url,
-                            title: newSong.title,
-                            data: newSong.data,
-                            lastUpdated: newSong.lastUpdated,
-                            offsetTimer: songUpdateTimer,
-                        });
+                    songdataHelpers.addNewSongToDB(songData, songUpdateTimer, SongDataModel, (err, data) => {
+                        if (err) console.log("error adding new song to database");
+                        else res.send(data);
                     });
                 } else {
                     //return error message
