@@ -3,8 +3,8 @@ const express = require("express"),
     SongDataModel = require(".././models/SongData"),
     mongoose = require("mongoose"),
     songdataHelpers = require("../helpers/songdataHelpers");
-// const songUpdateTimer = 3600000; //real timer
-const songUpdateTimer = 30000; //testing timer
+// const songUpdateTimer = 3600000; //1 hour timer
+const songUpdateTimer = 1800000; //30 min timer
 //POST
 router.post("/", (req, res) => {
     const targetUrl = req.body.targetUrl.split("?")[0];
@@ -78,7 +78,7 @@ router.post("/", (req, res) => {
                                                                 if (err) {
                                                                     console.log("HADLE RELATED SONG UPDATE SAVE ERROR", err);
                                                                 } else {
-                                                                    console.log("related song updated");
+                                                                    console.log(relatedSong.title + " was updated");
                                                                 }
                                                             });
                                                         }
