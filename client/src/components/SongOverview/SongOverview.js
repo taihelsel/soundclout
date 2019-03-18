@@ -37,6 +37,7 @@ class SongOverview extends Component {
         })
             .then((res) => res.json())
             .then((res) => {
+                console.log(res);
                 let d = new Date(res.lastUpdated);
                 const _state = this.state;
                 _state.dataFetched = true;
