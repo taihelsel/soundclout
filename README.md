@@ -13,21 +13,6 @@ MONGODB_URI=
 - cd .././server
 - run "npm run-script buildrun"
 
-# Tech Used
-- npm
-- HTML
-- CSS
-- JavaScript
-- ReactJS
-- React Router
-- Chart.js
-- React Chart.js 2
-- Node.js
-- Mongoose
-- MongoDB
-- Express
-- xmlhttprequest lib
-- cheerio
 
 # Routes
 | Path|Method|Expects|Response|
@@ -51,7 +36,7 @@ fetch("/songdata", {
             console.log(res);
         });
 ```
-example response
+response to the request
 ```javascript
 { 
     songId:"255996177",
@@ -62,6 +47,23 @@ example response
     offsetTimer:1800000
 }
 ```
+
+# Tech Used
+- npm
+- HTML
+- CSS
+- JavaScript
+- ReactJS
+- React Router
+- Chart.js
+- React Chart.js 2
+- Node.js
+- Mongoose
+- MongoDB
+- Express
+- xmlhttprequest lib
+- cheerio
+
 # TODO 
 - Error handling on songdata req to soundcloud
 - Error handling on songdata db query
