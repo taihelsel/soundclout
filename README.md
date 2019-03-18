@@ -20,7 +20,6 @@ MONGODB_URI=
 - Error messages being sent to front-end
 - Implement redux
 - Create a react-native version that requests data from this version 
-- Automatically check for new data when timer expires
 
 
 # Tech Used
