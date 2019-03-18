@@ -13,10 +13,8 @@ router.post("/", (req, res) => {
     const diff = t - songUpdateTimer;
     //checking database for song
     SongDataModel.findOne({ url: targetUrl }, function (err, song) {
-        if (err) {
-            //return error message
-            console.log("song err " + err);
-        } else if (!err && song) {
+        if (err) console.log("song err " + err);
+        else if (!err && song) {
             //no err - song is in database
             if (song.lastUpdated <= diff) {
                 // Time to request/update song data
@@ -38,16 +36,13 @@ router.post("/", (req, res) => {
                                         offsetTimer: songUpdateTimer,
                                     };
                                     const relatedSongLimit = 10;
+
                                     songdataHelpers.reqRelatedSongs(song.songId, relatedSongLimit, (err, relatedSongList) => {
                                         if (err === false && relatedSongList.length > 0) {
-                                            console.log("has related song list");
                                             relatedSongList.forEach((songData) => {
-                                                console.log("related song", songData);
                                                 SongDataModel.findOne({ url: songData.url }, function (err, relatedSong) {
-                                                    if (err) {
-                                                        //return error message
-                                                        console.log("related song err " + err);
-                                                    } else if (!err && relatedSong) {
+                                                    if (err) console.log("related song err " + err);
+                                                    else if (!err && relatedSong) {
                                                         const latestData = relatedSong.data[relatedSong.data.length - 1];
                                                         //no err - song is in database
                                                         if (songData.likes !== latestData.likes && songData.comments !== latestData.comments && songData.plays !== latestData.plays) {
@@ -67,10 +62,7 @@ router.post("/", (req, res) => {
                                                 });
 
                                             });
-                                        } else {
-                                            //return error message
-                                            console.log("err requesting song data", err);
-                                        }
+                                        } else console.log("err requesting song data", err);
                                         res.send(dataToBeSent);
                                     });
                                 }
@@ -114,7 +106,6 @@ router.post("/", (req, res) => {
             //no err - add song to db
             songdataHelpers.initialSongReq(targetUrl, (err, songData) => {
                 if (err === false && songData) {
-                    console.log("song", songData);
                     songdataHelpers.addNewSongToDB(songData, songUpdateTimer, SongDataModel, (err, data) => {
                         if (err) console.log("error adding new song to database");
                         else res.send(data);
