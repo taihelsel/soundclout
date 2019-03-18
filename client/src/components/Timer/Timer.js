@@ -3,7 +3,7 @@ class Timer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            timeToDisplay: 0,
+            timeLeft: 0,
             preLabel: this.props.preLabel || "",
             postLabel: this.props.postLabel || "",
             startTime: this.props.startTime, //expected to be passed down in ms.
@@ -13,28 +13,36 @@ class Timer extends Component {
     componentWillMount = () => {
         this.convertTime();
     }
-    updateTimer = () => {
-        const _state = this.state;
-        if (_state.timeToDisplay > 0) {
-            setTimeout(() => {
-                //CURRENTLY ON  A ONE SECOND INTERVAL
-                _state.timeToDisplay -= 1;
-                this.setState(_state);
-            }, 1000);
-        }
-    }
     convertTime = () => {
         //CURRENTLY CONVERTING TO SECONDS. MAY WANT TO CHANGE IN THE FUTURE.
         const _state = this.state;
         const diff = _state.endTime - _state.startTime;
-        _state.timeToDisplay = Math.ceil(diff / 1000);
+        _state.timeLeft = Math.ceil(diff / 1000);
         this.setState(_state);
+    }
+    updateTimer = () => {
+        const _state = this.state;
+        if (_state.timeLeft > 0) {
+            setTimeout(() => {
+                //CURRENTLY ON  A ONE SECOND INTERVAL
+                _state.timeLeft -= 1;
+                this.setState(_state);
+            }, 1000);
+        }
+    }
+    formatTime = (s) => {
+        //MM:SS format
+        if (s < 1) return "00:00";
+
+        let min = Math.floor(s / 60) < 10 ? "0" + Math.floor(s / 60) : Math.floor(s / 60), sec = s % 60 < 10 ? "0" + s % 60 : s % 60;
+
+        return `00:${min}:${sec}`;
     }
     render() {
         this.updateTimer();
         return (
             <div className="timer-wrapper">
-                <h1 className="timer-label">{this.state.preLabel} {this.state.timeToDisplay} {this.state.postLabel}</h1>
+                <h1 className="timer-label">{this.state.preLabel} {this.formatTime(this.state.timeLeft)} {this.state.postLabel}</h1>
             </div>
         );
     }
