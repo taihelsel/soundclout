@@ -19,7 +19,7 @@ router.post("/", (req, res) => {
             //no err - song is in database
             if (song.lastUpdated <= diff) {
                 // Time to request/update song data
-                songdataHelpers.reqData(song.url, (err, songData) => {
+                songdataHelpers.reqSong(song.songId, (err, songData) => {
                     const latestData = song.data[song.data.length - 1];
                     if (err === false && songData) {
                         if (
@@ -84,7 +84,7 @@ router.post("/", (req, res) => {
             }
         } else if (!err && !song) {
             //no err - add song to db
-            songdataHelpers.reqData(targetUrl, (err, songData) => {
+            songdataHelpers.initialSongReq(targetUrl, (err, songData) => {
                 if (err === false && songData) {
                     console.log("song", songData);
                     const newSong = new SongDataModel({

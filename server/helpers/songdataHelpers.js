@@ -41,7 +41,7 @@ exports.reqSong = (songId, cb) => {
         const song = {
             likes: parseInt(responseJSON["likes_count"]),
             plays: parseInt(responseJSON["playback_count"]),
-            comments: parseInt(responseJSON["comments_count"]),
+            comments: parseInt(responseJSON["comment_count"]),
         };
         cb(err, song);
     });
@@ -66,7 +66,7 @@ exports.reqRelatedSongs = (songId, limit, cb) => {
                 title: songJSON.title,
                 likes: parseInt(responseJSON["likes_count"]),
                 plays: parseInt(responseJSON["playback_count"]),
-                comments: parseInt(responseJSON["comments_count"]),
+                comments: parseInt(responseJSON["comment_count"]),
             }
         });
         cb(err, songs);
