@@ -18,7 +18,7 @@ router.post("/", (req, res) => {
         } else if (!err && song) {
             //no err - song is in database
             if (song.lastUpdated <= diff) {
-                //update song data
+                // Time to request/update song data
                 songdataHelpers.reqData(song.url, (err, songData) => {
                     const latestData = song.data[song.data.length - 1];
                     if (err === false && songData) {
@@ -27,7 +27,7 @@ router.post("/", (req, res) => {
                             songData.comments !== latestData.comments &&
                             songData.plays !== latestData.plays
                         ) {
-                            //data from ajax req does not match existing data. Much update db.
+                            // New data from request. Time to update database.
                             song.data.push({
                                 likes: songData.likes,
                                 plays: songData.plays,
@@ -48,7 +48,8 @@ router.post("/", (req, res) => {
                                 });
                             });
                         } else {
-                            //data from ajax req matches data in db (no reason to save). update lastUpdated and send current data.
+                            // No new data from request. 
+                            // Just update time stamp and then send data from db.
                             song.lastUpdated = t;
                             song.save((err) => {
                                 if (err) {
@@ -70,7 +71,8 @@ router.post("/", (req, res) => {
                     }
                 })
             } else {
-                //sending existing song data.
+                // Not time to request/update data.
+                // Sending the data from db.
                 res.send({
                     songId: song.songId,
                     url: song.url,
@@ -113,7 +115,7 @@ router.post("/", (req, res) => {
                     //return error message
                     console.log("err requesting song data", err);
                 }
-            })
+            });
         }
     });
 });
