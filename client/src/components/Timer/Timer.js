@@ -28,6 +28,8 @@ class Timer extends Component {
                 _state.timeLeft -= 1;
                 this.setState(_state);
             }, 1000);
+        }else {
+            if(typeof this.props.onEnd !== "undefined") this.props.onEnd();
         }
     }
     formatTime = (s) => {

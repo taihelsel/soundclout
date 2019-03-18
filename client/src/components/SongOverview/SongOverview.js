@@ -10,12 +10,20 @@ class SongOverview extends Component {
         songData: {}, //response from the back end containing all the song information
         graphData: [], //an array of datasets formatted for the react-chartjs-2
         dataFetched: false, //false will render loading wheel. true renders songoverview
+        u: "",
+        s: "",
     }
     componentWillMount() {
         const url = new URL(window.location.href);
         const u = url.searchParams.get("u");
         const s = url.searchParams.get("s");
         this.fetchSongData(u, s);
+    }
+    onTimerEnd = () => {
+        const _state = this.state;
+        _state.dataFetched = false;
+        this.setState(_state);
+        this.fetchSongData(this.state.u, this.state.s);
     }
     fetchSongData = (u, s) => {
         const targetUrl = `https://soundcloud.com/${u}/${s}`;
@@ -32,6 +40,8 @@ class SongOverview extends Component {
                 let d = new Date(res.lastUpdated);
                 const _state = this.state;
                 _state.dataFetched = true;
+                _state.u = u;
+                _state.s = s;
                 res.lastUpdated = d.getTime();
                 _state.songData = res;
                 _state.graphData = this.generateGraphData(res);
@@ -63,7 +73,7 @@ class SongOverview extends Component {
 
         if (min < 10) min = "0" + min;
         h = h < 1 ? h = 12 : h >= 13 ? h -= 12 : h;
-        
+
         return `${h}:${min}${label} ${month}/${day}/${year.toString().substring(2)}`;
     }
     generateGraphData = (songData) => {
@@ -154,7 +164,7 @@ class SongOverview extends Component {
                             <iframe id="song-iframe" scrolling="no" frameborder="no" allow="autoplay" src={`https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${this.state.songData.songId}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true`}></iframe>
                         </div>
                         {this.renderGraphs()}
-                        <Timer preLabel={"Updating in "} postLabel={""} startTime={Date.now()} endTime={this.state.songData.lastUpdated + this.state.songData.offsetTimer} />
+                        <Timer onEnd={this.onTimerEnd} preLabel={"Updating in "} postLabel={""} startTime={Date.now()} endTime={this.state.songData.lastUpdated + this.state.songData.offsetTimer} />
                     </div>)
                     : (<LoadingWheel />)
                 }
