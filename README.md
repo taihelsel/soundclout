@@ -17,7 +17,7 @@ MONGODB_URI=
 # Routes
 | Path|Method|Expects|Response|
 | --- | --- | --- | --- |
-| /songdata | POST | soundcloud song URL | {songId,url,title,data,lastUpdated,offsetTimer} |
+| /songdata | POST | "soundcloud song URL" | {songId,url,title,data,lastUpdated,offsetTimer} |
 
 
 example request
