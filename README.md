@@ -67,8 +67,9 @@ fetch("/songdata", {
 * If the song exists in the database, then it checks if it should be updated.
   * If the song should be updated it will:
     * use the reqSong() function to request the latest information for the song.
-    * Once the original song has been updated it will request the related songs from SoundCloud (reqRelatedSongs() function) and add (addNewSongToDB() function) or update (updateSongInDB() function) those items in the database 
-    * After all related songs have been added or updated it will send the originally requested song data to the front-end.
+    * Save the new song data in the database.
+    * After updating the originally requested song, it will request the related songs from SoundCloud (reqRelatedSongs() function) and add (addNewSongToDB() function) or update (updateSongInDB() function) those items in the database 
+    * After all related songs have been added or updated, it will send the originally requested song data to the front-end.
   * If the song does not need to be updated, it will send the song data that is currently stored in the DB to the front-end.
 * If the song does not exist in the database:
   * It will use the initialSongReq() function to make a request to the target SoundCloud song url.
