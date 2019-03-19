@@ -84,7 +84,6 @@ exports.shouldUpdate = (oldData, newData) => {
         if oldData = newData return false
         else return true
     */
-    console.log("old", oldData, "\r\nnew", newData);
     return oldData.likes === newData.likes && oldData.comments === newData.comments && oldData.plays === newData.plays ? false : true;
 }
 exports.addNewSongToDB = (songData, updateTimer, model, cb) => {
