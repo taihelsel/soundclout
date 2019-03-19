@@ -4,8 +4,8 @@ const express = require("express"),
     mongoose = require("mongoose"),
     songdataHelpers = require("../helpers/songdataHelpers");
 // const songUpdateTimer = 3600000; //1 hour timer
-const songUpdateTimer = 1800000; //30 min timer
-// const songUpdateTimer = 30000; //30 sec timer
+// const songUpdateTimer = 1800000; //30 min timer
+const songUpdateTimer = 30000; //30 sec timer
 //POST
 router.post("/", (req, res) => {
     const targetUrl = req.body.targetUrl.split("?")[0];
@@ -21,7 +21,7 @@ router.post("/", (req, res) => {
                 songdataHelpers.reqSong(song.songId, (err, songData) => {
                     const latestData = song.data[song.data.length - 1];
                     if (err === false && songData) {
-                        if (songData.likes !== latestData.likes && songData.comments !== latestData.comments && songData.plays !== latestData.plays) {
+                        if (songdataHelpers.shouldUpdate(latestData, songData)) {
                             // New data from request. Time to update database.
                             songdataHelpers.updateSongInDB(song, songData, (err, song) => {
                                 if (err) console.log("error updating song in database.", err);
@@ -45,7 +45,7 @@ router.post("/", (req, res) => {
                                                     else if (!err && relatedSong) {
                                                         const latestData = relatedSong.data[relatedSong.data.length - 1];
                                                         //no err - song is in database
-                                                        if (songData.likes !== latestData.likes && songData.comments !== latestData.comments && songData.plays !== latestData.plays) {
+                                                        if (songdataHelpers.shouldUpdate(latestData, songData)) {
                                                             // New data from request. Time to update database.
                                                             songdataHelpers.updateSongInDB(relatedSong, songData, (err, song) => {
                                                                 if (err) console.log("error updating related song in database");

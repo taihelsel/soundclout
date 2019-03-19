@@ -78,7 +78,15 @@ exports.reqRelatedSongs = (songId, limit, cb) => {
 }
 
 /*DB HELPERS*/
-
+exports.shouldUpdate = (oldData, newData) => {
+    /*
+        expects two objects with song data. 
+        if oldData = newData return false
+        else return true
+    */
+    console.log("old", oldData, "\r\nnew", newData);
+    return oldData.likes === newData.likes && oldData.comments === newData.comments && oldData.plays === newData.plays ? false : true;
+}
 exports.addNewSongToDB = (songData, updateTimer, model, cb) => {
     /*
         expects songData for a song, timer for when song is to be updated, SongDataModel, cb for the save
