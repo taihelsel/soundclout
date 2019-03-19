@@ -4,8 +4,8 @@ const express = require("express"),
     mongoose = require("mongoose"),
     songdataHelpers = require("../helpers/songdataHelpers");
 // const songUpdateTimer = 3600000; //1 hour timer
-// const songUpdateTimer = 1800000; //30 min timer
-const songUpdateTimer = 30000; //30 sec timer
+const songUpdateTimer = 1800000; //30 min timer
+// const songUpdateTimer = 30000; //30 sec timer
 //POST
 router.post("/", (req, res) => {
     const targetUrl = req.body.targetUrl.split("?")[0];
