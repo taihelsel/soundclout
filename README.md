@@ -1,10 +1,10 @@
-- [Setup](https://github.com/taihelsel/soundclout#user-content-to-run-application)
+- [Setup](https://github.com/taihelsel/soundclout#user-content-setup)
 - [Routes](https://github.com/taihelsel/soundclout#user-content-routes)
 - [Examples](https://github.com/taihelsel/soundclout#user-content-examples)
 - [How it works](https://github.com/taihelsel/soundclout#user-content-how-it-works)
 - [Tech Used](https://github.com/taihelsel/soundclout#user-content-tech-used)
 - [Todo](https://github.com/taihelsel/soundclout#user-content-todo)
-# TO RUN APPLICATION 
+# Setup
 - clone to local machine
 - cd server
 - run "npm install"
