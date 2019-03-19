@@ -18,6 +18,32 @@ MONGODB_URI=
 | --- | --- | --- | --- |
 | /songdata | POST | "soundcloud song URL" | {songId,url,title,data,lastUpdated,offsetTimer} |
 
+# How it works
+1. Get the data from user
+* Inside the SongSearch Component the user will input a URL that points to a SoundCloud song.
+* The URL is dissected for the required information (song title & username), and then the client redirects to the SongOverview Component.
+2. Request song data from back-end
+* Inside the SongOverview Component the song title & username are pulled from the URL parameters.
+* Next the information is passed into a function that will hit a POST route on the backend to retrieve the data
+3. Handle song data request on back-end
+* First it checks if the song is in the DB.
+* If the song exists in the database, then it checks if it should be updated.
+  * If the song should be updated it will:
+    * use the reqSong() function to request the latest information for the song.
+    * Once the original song has been updated it will request the related songs from SoundCloud (reqRelatedSongs() function) and add (addNewSongToDB() function) or update (updateSongInDB() function) those items in the database 
+    * After all related songs have been added or updated it will send the originally requested song data to the front-end.
+  * If the song does not need to be updated, it will send the song data that is currently stored in the DB to the front-end.
+* If the song does not exist in the database:
+  * It will use the initialSongReq() function to make a request to the target SoundCloud song url.
+  * Use cheerio to parse the response and target specific meta tags for the song data
+  * Save the song data in db using the addNewSongToDB() function
+  * Send song data to front-end
+4. Handling song data on the front-end
+* Inside the SongOverview component all the song data from the back-end gets prepared to be stored in the component state.
+* The song data gets formatted a Chart.js line graph.
+* The song's title and username gets added to a "song search history" inside localStorage. This then used in the Home component to display the recent searches.
+* Using the time of the last song update & the offset time (time to wait inbetween song updates) a timer is generated that will automatically request new song data from the backend upon expiration.
+* Finally, the Component state is updated and it renders the song information.
 
 #### example request
 ```javascript
