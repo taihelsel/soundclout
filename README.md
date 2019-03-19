@@ -47,7 +47,7 @@ response to the request
 }
 ```
 #### Example song overview
-https://i.imgur.com/hh6ISe9.png
+![alt text](https://i.imgur.com/hh6ISe9.png)
 
 # Tech Used
 - npm
