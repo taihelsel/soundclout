@@ -55,7 +55,7 @@ fetch("/songdata", {
 2. Request song data from back-end
 * Inside the SongOverview Component the song title & username are pulled from the URL parameters.
 * Next the information is passed into a function that will hit a POST route on the backend to retrieve the data
-3. Handle song data request on back-end
+3. Handling the song data request on back-end
 * First it checks if the song is in the DB.
 * If the song exists in the database, then it checks if it should be updated.
   * If the song should be updated it will:
