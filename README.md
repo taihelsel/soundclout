@@ -1,12 +1,17 @@
+[Setup](https://github.com/taihelsel/soundclout#user-content-to-run-application)
+[Routes](https://github.com/taihelsel/soundclout#user-content-routes)
+[Project Overview](https://github.com/taihelsel/soundclout#user-content-how-it-works)
+[Tech Used](https://github.com/taihelsel/soundclout#user-content-tech-used)
+[Todo](https://github.com/taihelsel/soundclout#user-content-todo)
 # TO RUN APPLICATION 
 - clone to local machine
 - cd server
 - run "npm install"
 - create a dot env file with the following environment variables:
-SESSION_SECRET=
-PORT=
-DB_NAME=
-MONGODB_URI=
+  - SESSION_SECRET=
+  - PORT=
+  - DB_NAME=
+  - MONGODB_URI=
 - assign values to the variables
 - cd .././client
 - run "npm install"
