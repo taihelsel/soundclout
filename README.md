@@ -1,8 +1,8 @@
-[Setup](https://github.com/taihelsel/soundclout#user-content-to-run-application)
-[Routes](https://github.com/taihelsel/soundclout#user-content-routes)
-[Project Overview](https://github.com/taihelsel/soundclout#user-content-how-it-works)
-[Tech Used](https://github.com/taihelsel/soundclout#user-content-tech-used)
-[Todo](https://github.com/taihelsel/soundclout#user-content-todo)
+- [Setup](https://github.com/taihelsel/soundclout#user-content-to-run-application)
+- [Routes](https://github.com/taihelsel/soundclout#user-content-routes)
+- [Project Overview](https://github.com/taihelsel/soundclout#user-content-how-it-works)
+- [Tech Used](https://github.com/taihelsel/soundclout#user-content-tech-used)
+- [Todo](https://github.com/taihelsel/soundclout#user-content-todo)
 # TO RUN APPLICATION 
 - clone to local machine
 - cd server
