@@ -56,14 +56,14 @@ router.post("/", (req, res) => {
                                                         //no err - add song to db
                                                         songdataHelpers.addNewSongToDB(songData, songUpdateTimer, SongDataModel, (err, data) => {
                                                             if (err) console.log("error adding new song to database");
-                                                            else res.send(data);
+                                                            else return res.send(data);
                                                         });
                                                     }
                                                 });
 
                                             });
                                         } else console.log("err requesting song data", err);
-                                        res.send(dataToBeSent);
+                                        return res.send(dataToBeSent);
                                     });
                                 }
                             })
@@ -74,7 +74,7 @@ router.post("/", (req, res) => {
                             song.save((err) => {
                                 if (err) {
                                     console.log("HADLE SONG UPDATE SAVE ERROR", err);
-                                } else res.send({
+                                } else return res.send({
                                     songId: song.songId,
                                     url: song.url,
                                     title: song.title,
@@ -93,7 +93,7 @@ router.post("/", (req, res) => {
             } else {
                 // Not time to request/update data.
                 // Sending the data from db.
-                res.send({
+                return res.send({
                     songId: song.songId,
                     url: song.url,
                     title: song.title,
@@ -108,7 +108,7 @@ router.post("/", (req, res) => {
                 if (err === false && songData) {
                     songdataHelpers.addNewSongToDB(songData, songUpdateTimer, SongDataModel, (err, data) => {
                         if (err) console.log("error adding new song to database");
-                        else res.send(data);
+                        else return res.send(data);
                     });
                 } else {
                     //return error message
