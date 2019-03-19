@@ -78,7 +78,7 @@ fetch("/songdata", {
   * Send song data to front-end
 4. Handling song data on the front-end
 * Inside the SongOverview component all the song data from the back-end gets prepared to be stored in the component state.
-* The song data gets formatted a Chart.js line graph.
+* The song data gets formatted (stored inside of graphData) so it can be inserted into a Chart.js line graph.
 * The song's title and username gets added to a "song search history" inside localStorage. This then used in the Home component to display the recent searches.
 * Using the time of the last song update & the offset time (time to wait inbetween song updates) a timer is generated that will automatically request new song data from the backend upon expiration.
 * Finally, the Component state is updated and it renders the song information.
