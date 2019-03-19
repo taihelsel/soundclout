@@ -1,6 +1,7 @@
 - [Setup](https://github.com/taihelsel/soundclout#user-content-to-run-application)
 - [Routes](https://github.com/taihelsel/soundclout#user-content-routes)
-- [Project Overview](https://github.com/taihelsel/soundclout#user-content-how-it-works)
+- [Examples](https://github.com/taihelsel/soundclout#user-content-examples)
+- [How it works](https://github.com/taihelsel/soundclout#user-content-how-it-works)
 - [Tech Used](https://github.com/taihelsel/soundclout#user-content-tech-used)
 - [Todo](https://github.com/taihelsel/soundclout#user-content-todo)
 # TO RUN APPLICATION 
@@ -23,6 +24,7 @@
 | --- | --- | --- | --- |
 | /songdata | POST | "soundcloud song URL" | {songId,url,title,data,lastUpdated,offsetTimer} |
 
+# Examples
 #### example request
 ```javascript
 const exampleURL = "https://soundcloud.com/joewalshmusic/lifes-been-good";
@@ -50,7 +52,7 @@ fetch("/songdata", {
     offsetTimer:1800000
 }
 ```
-#### Example song overview
+#### song overview
 ![alt text](https://i.imgur.com/hh6ISe9.png)
 
 # How it works
