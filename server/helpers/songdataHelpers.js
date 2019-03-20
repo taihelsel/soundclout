@@ -1,9 +1,30 @@
 const cheerio = require('cheerio'),
     XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest,
-    sndapk = "cQXBZEg50tuw0q10w3TGcKGBKADRLoOO";
+    apiKeyUpdateTimer = 172800000; // 48 hr timer
 
 /*REQ HELPERS*/
-
+const fetchNewAPIKey = (cb) => {
+    let err = false; // <- return error message in here
+    const xhr = new XMLHttpRequest();
+    const xhr2 = new XMLHttpRequest();
+    xhr.addEventListener("load", function () {
+        const responseText = this.responseText;
+        const $ = cheerio.load(responseText);
+        const targetUrl = $("body > script:nth-child(8)").attr("src");
+        xhr2.addEventListener("load", function () {
+            let responseText = this.responseText;
+            const s = responseText.indexOf(",client_id:"), f = responseText.indexOf(",env:\"");
+            responseText = responseText.substring(s, f);
+            let apiKey = responseText.replace(",client_id:\"", "");
+            apiKey = apiKey.replace("\"", "");
+            cb(err, apiKey);
+        });
+        xhr2.open("GET", targetUrl);
+        xhr2.send();
+    });
+    xhr.open("GET", "https://soundcloud.com/");
+    xhr.send();
+}
 exports.initialSongReq = (targetUrl, cb) => {
     /*
         Use this function if song is not in databse. Will request all the required intial data that is required for the future soundcloud API req.
@@ -29,7 +50,7 @@ exports.initialSongReq = (targetUrl, cb) => {
     xhr.send();
 }
 
-exports.reqSong = (songId, cb) => {
+exports.reqSong = (songId, key, cb) => {
     /*
         use this function to request song data on songs that are already in the database.
         DO NOT use for a new song. It will not have a valid songID.
@@ -47,11 +68,11 @@ exports.reqSong = (songId, cb) => {
         };
         cb(err, song);
     });
-    xhr.open("GET", `https://api-v2.soundcloud.com/tracks/${songId}?client_id=${sndapk}`);
+    xhr.open("GET", `https://api-v2.soundcloud.com/tracks/${songId}?client_id=${key}`);
     xhr.send();
 }
 
-exports.reqRelatedSongs = (songId, limit, cb) => {
+exports.reqRelatedSongs = (songId, key, limit, cb) => {
     /*
         use this function to request songs from the related list. This will help maximize amount of relevant data being stored in the db while making the least amount of requests to the api.=
         expects a valid songId, a number of songs to request, and a callback to handle the data.
@@ -73,7 +94,7 @@ exports.reqRelatedSongs = (songId, limit, cb) => {
         });
         cb(err, songs);
     });
-    xhr.open("GET", `https://api-v2.soundcloud.com/tracks/${songId}/related?client_id=${sndapk}&limit=${limit}`);
+    xhr.open("GET", `https://api-v2.soundcloud.com/tracks/${songId}/related?client_id=${key}&limit=${limit}`);
     xhr.send();
 }
 
@@ -133,5 +154,36 @@ exports.updateSongInDB = (song, newData, cb) => {
         if (err) {
             cb(err, null);
         } else cb(false, song);
+    });
+}
+
+exports.handleAPIKey = (model, cb) => {
+    model.find({}, function (err, key) {
+        if (err) console.log("err finding api key in db");
+        else if (key.length < 1) {
+            //add new api key
+            fetchNewAPIKey((err, v) => {
+                const newApiKey = new model({ key: v });
+                newApiKey.save((err) => {
+                    if (err) console.log("error saving new api key");
+                    else cb(v)
+                });
+            });
+        } else {
+            const apiKey = key[0];
+            if (Date.now() - apiKeyUpdateTimer >= apiKey.timeStamp) {
+                // must update api key
+                fetchNewAPIKey((err, v) => {
+                    apiKey.key = v;
+                    apiKey.timeStamp = Date.now();
+                    apiKey.save((err) => {
+                        if (err) console.log("error saving new api key");
+                        else cb(v)
+                    });
+                });
+            } else {
+                cb(apiKey.key);
+            }
+        }
     });
 }
