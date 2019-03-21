@@ -13,17 +13,11 @@ class SongOverview extends Component {
         u: "",
         s: "",
     }
-    componentWillMount() {
+    componentDidMount() {
         const url = new URL(window.location.href);
         const u = url.searchParams.get("u");
         const s = url.searchParams.get("s");
         this.fetchSongData(u, s);
-    }
-    onTimerEnd = () => {
-        const _state = this.state;
-        _state.dataFetched = false;
-        this.setState(_state);
-        this.fetchSongData(this.state.u, this.state.s);
     }
     fetchSongData = (u, s) => {
         const targetUrl = `https://soundcloud.com/${u}/${s}`;
@@ -154,6 +148,12 @@ class SongOverview extends Component {
                 {graphs}
             </ul>
         );
+    }
+    onTimerEnd = () => {
+        const _state = this.state;
+        _state.dataFetched = false;
+        this.setState(_state);
+        this.fetchSongData(this.state.u, this.state.s);
     }
     render() {
         return (
