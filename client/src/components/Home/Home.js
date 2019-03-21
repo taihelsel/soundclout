@@ -5,25 +5,14 @@ class Home extends Component {
     state = {
         searchText: "",
     }
-    updateSearchText = (e) => {
-        const text = e.target.value;
-        const _state = this.state;
-        _state.searchText = text;
-        this.setState(_state);
-    }
     formatUrl = (url) => {
         url = url.replace("https://", "");
         url = url.replace("http://", "");
         return url.split("/");
     }
-    handleSearchSubmit = (e) => {
-        e.preventDefault();
-        const _state = this.state, url = this.formatUrl(_state.searchText);
-        window.location.href = `/songdata?u=${url[1]}&s=${url[2]}`;
-    }
     handleHistoryClick = (url) => {
         url = this.formatUrl(url);
-        window.location.href = `/songdata?u=${url[1]}&s=${url[2]}`;
+        this.props.history.push(`/songdata?u=${url[1]}&s=${url[2]}`);
     }
     renderRecentlyViewed = () => (
         localStorage.getItem("songHistory") !== null ? (
