@@ -17,7 +17,7 @@ class SongSearch extends Component {
         url = url.replace("https://", "");
         url = url.replace("http://", "");
         const urlArr = url.split("/");
-        this.props.history.push(`/songdata?u=${urlArr[1]}&s=${urlArr[2]}`);
+        this.props.history.push(`/songdata/${urlArr[1]}/${urlArr[2]}`);
     }
     render() {
         return (

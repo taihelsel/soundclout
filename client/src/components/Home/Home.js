@@ -12,7 +12,7 @@ class Home extends Component {
     }
     handleHistoryClick = (url) => {
         url = this.formatUrl(url);
-        this.props.history.push(`/songdata?u=${url[1]}&s=${url[2]}`);
+        this.props.history.push(`/songdata/${url[1]}/${url[2]}`);
     }
     renderRecentlyViewed = () => (
         localStorage.getItem("songHistory") !== null ? (

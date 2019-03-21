@@ -14,9 +14,8 @@ class SongOverview extends Component {
         s: "",
     }
     componentDidMount() {
-        const url = new URL(window.location.href);
-        const u = url.searchParams.get("u");
-        const s = url.searchParams.get("s");
+        const u = this.props.match.params.u;
+        const s = this.props.match.params.s;
         this.fetchSongData(u, s);
     }
     fetchSongData = (u, s) => {
