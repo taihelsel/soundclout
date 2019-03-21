@@ -158,7 +158,7 @@ class SongOverview extends Component {
     render() {
         return (
             <section id="SongOverview">
-                <Nav />
+                <Nav history={this.props.history} />
                 {this.state.dataFetched ?
                     (<div>
                         <div id="song-iframe-wrapper">

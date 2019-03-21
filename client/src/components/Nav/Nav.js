@@ -4,13 +4,13 @@ import "./Nav.css";
 import SongSearch from "../SongSearch/SongSearch.js";
 class Nav extends Component {
     handleNavBack = () => {
-        window.location.href = "/";
+        this.props.history.push("/");
     }
     render() {
         return (
             <nav>
                 <h3 id="nav-back-arrow" onClick={this.handleNavBack}>⬅</h3>
-                <SongSearch />
+                <SongSearch history={this.props.hitory} />
             </nav>
         );
     }

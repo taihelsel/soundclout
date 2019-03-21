@@ -42,7 +42,7 @@ class Home extends Component {
         return (
             <section id="Home">
                 <h1 id="home-head">SoundClout</h1>
-                <SongSearch />
+                <SongSearch history={this.props.history} />
                 {this.renderRecentlyViewed()}
             </section>
         );
