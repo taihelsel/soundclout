@@ -31,13 +31,11 @@ class SongOverview extends Component {
         })
             .then((res) => res.json())
             .then((res) => {
-                console.log(res);
-                let d = new Date(res.lastUpdated);
+                res.lastUpdated = new Date(res.lastUpdated).getTime();
                 const _state = this.state;
                 _state.dataFetched = true;
                 _state.u = u;
                 _state.s = s;
-                res.lastUpdated = d.getTime();
                 _state.songData = res;
                 _state.graphData = this.generateGraphData(res);
                 this.addSongToHistory(res);
