@@ -18,6 +18,14 @@ class SongOverview extends Component {
         const s = this.props.match.params.s;
         this.fetchSongData(u, s);
     }
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.location.pathname !== this.props.location.pathname) {
+            const u = this.props.match.params.u;
+            const s = this.props.match.params.s;
+            this.setState({ dataFetched: false });
+            this.fetchSongData(u, s);
+        }
+    }
     fetchSongData = (u, s) => {
         const targetUrl = `https://soundcloud.com/${u}/${s}`;
         fetch("/songdata", {

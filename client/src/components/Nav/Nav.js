@@ -10,7 +10,7 @@ class Nav extends Component {
         return (
             <nav>
                 <h3 id="nav-back-arrow" onClick={this.handleNavBack}>⬅</h3>
-                <SongSearch history={this.props.hitory} />
+                <SongSearch history={this.props.history} />
             </nav>
         );
     }
