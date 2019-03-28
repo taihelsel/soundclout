@@ -1,32 +1,40 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { connect } from "react-redux";
+import { updateText } from "../../actions/searchActions";
 import "./SongSearch.css";
-class SongSearch extends Component {
-    state = {
-        searchText: "",
-    }
-    updateSearchText = (e) => {
-        const text = e.target.value;
-        const _state = this.state;
-        _state.searchText = text;
-        this.setState(_state);
-    }
-    handleSearchSubmit = (e) => {
-        e.preventDefault();
-        const _state = this.state;
-        let url = _state.searchText;
-        url = url.replace("https://", "");
-        url = url.replace("http://", "");
-        const urlArr = url.split("/");
-        this.props.history.push(`/songdata/${urlArr[1]}/${urlArr[2]}`);
-    }
-    render() {
-        return (
-            <form className="song-search" onSubmit={this.handleSearchSubmit}>
-                <input type="text" onChange={this.updateSearchText} value={this.state.searchText} placeholder="Paste in song url and hit Enter" />
-                <input type="submit" style={{ display: "none" }} />
-            </form>
-        );
+
+const handleSearchInput = updateText => e => {
+    const text = e.target.value;
+    updateText(text);
+}
+const handleSearchSubmit = (history, searchText) => e => {
+    e.preventDefault();
+    let url = searchText;
+    url = url.replace("https://", "");
+    url = url.replace("http://", "");
+    const urlArr = url.split("/");
+    history.push(`/songdata/${urlArr[1]}/${urlArr[2]}`);
+}
+const SongSearch = ({ history, searchText, updateText }) => {
+    return (
+        <form className="song-search" onSubmit={handleSearchSubmit(history, searchText)}>
+            <input type="text" onChange={handleSearchInput(updateText)} value={searchText} placeholder="Paste in song url and hit Enter" />
+            <input type="submit" style={{ display: "none" }} />
+        </form>
+    );
+}
+
+const mapStateToProps = (state) => {
+    return {
+        searchText: state.searchText,
     }
 }
 
-export default SongSearch;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateText: (content) => { dispatch(updateText(content)) },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SongSearch);
+
