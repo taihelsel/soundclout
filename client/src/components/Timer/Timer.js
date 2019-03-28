@@ -1,42 +1,29 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { initTimer, decTimer } from "../../actions/timerActions";
 class Timer extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            timeLeft: 0,
-            preLabel: this.props.preLabel || "",
-            postLabel: this.props.postLabel || "",
-            startTime: this.props.startTime, //expected to be passed down in ms.
-            endTime: this.props.endTime, //expected to be passed down in ms.
-        }
-    }
     componentWillMount = () => {
         this.convertTime();
     }
     convertTime = () => {
         //CURRENTLY CONVERTING TO SECONDS. MAY WANT TO CHANGE IN THE FUTURE.
-        const _state = this.state;
-        const diff = _state.endTime - _state.startTime;
-        _state.timeLeft = Math.ceil(diff / 1000);
-        this.setState(_state);
+        const diff = this.props.endTime - this.props.startTime;
+        this.props.initTimer(Math.ceil(diff / 1000));
     }
     updateTimer = () => {
-        const _state = this.state;
-        if (_state.timeLeft > 0) {
+        if (this.props.timeLeft > 0) {
             setTimeout(() => {
                 //CURRENTLY ON  A ONE SECOND INTERVAL
-                _state.timeLeft -= 1;
-                this.setState(_state);
+                this.props.decTimer(1);
             }, 1000);
-        }else {
-            if(typeof this.props.onEnd !== "undefined") this.props.onEnd();
-        }
+        } else if (typeof this.props.onEnd !== "undefined") this.props.onEnd();
     }
     formatTime = (s) => {
         //MM:SS format
         if (s < 1) return "00:00";
 
-        let min = Math.floor(s / 60) < 10 ? "0" + Math.floor(s / 60) : Math.floor(s / 60), sec = s % 60 < 10 ? "0" + s % 60 : s % 60;
+        let min = Math.floor(s / 60) < 10 ? "0" + Math.floor(s / 60) : Math.floor(s / 60),
+            sec = s % 60 < 10 ? "0" + s % 60 : s % 60;
 
         return `00:${min}:${sec}`;
     }
@@ -44,10 +31,22 @@ class Timer extends Component {
         this.updateTimer();
         return (
             <div className="timer-wrapper">
-                <h1 className="timer-label">{this.state.preLabel} {this.formatTime(this.state.timeLeft)} {this.state.postLabel}</h1>
+                <h1 className="timer-label">{this.props.preLabel} {this.formatTime(this.props.timeLeft)} {this.props.postLabel}</h1>
             </div>
         );
     }
 }
+const mapStateToProps = (state) => {
+    return {
+        timeLeft: state.timer.timeLeft,
+    }
+}
 
-export default Timer;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        decTimer: (content) => { dispatch(decTimer(content)) },
+        initTimer: (content) => { dispatch(initTimer(content)) },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);
