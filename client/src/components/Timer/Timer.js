@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { initTimer, decTimer } from "../../actions/timerActions";
+import { resetTimer, initTimer, decTimer } from "../../actions/timerActions";
 class Timer extends Component {
     componentWillMount = () => {
         this.convertTime();
     }
     componentDidUpdate(prevProps) {
         if (prevProps.timeLeft !== this.props.timeLeft) this.updateTimer();
+    }
+    componentWillUnmount() {
+        this.props.resetTimer();
     }
     convertTime = () => {
         //CURRENTLY CONVERTING TO SECONDS. MAY WANT TO CHANGE IN THE FUTURE.
@@ -46,6 +49,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        resetTimer: () => { dispatch(resetTimer()) },
         decTimer: (content) => { dispatch(decTimer(content)) },
         initTimer: (content) => { dispatch(initTimer(content)) },
     }

@@ -1,4 +1,5 @@
 export const UPDATE_TEXT = "UPDATE_TEXT";
+export const RESET_TIMER = "RESET_TIMER";
 export const INIT_TIMER = "INIT_TIMER";
 export const DEC_TIMER = "DEC_TIMER";
 export const FETCH_SONGDATA_BEGIN = "FETCH_SONGDATA_BEGIN";
