@@ -1,21 +1,5 @@
 import { FETCH_SONGDATA_BEGIN, FETCH_SONGDATA_SUCCESS, FETCH_SONGDATA_FAILURE } from "./actionTypes";
 
-// const fetchSongData = (u, s) => {
-//     const targetUrl = `https://soundcloud.com/${u}/${s}`;
-
-//         .then((res) => res.json())
-//     .then((res) => {
-//         res.lastUpdated = new Date(res.lastUpdated).getTime();
-//         const _state = this.state;
-//         _state.dataFetched = true;
-//         _state.u = u;
-//         _state.s = s;
-//         _state.songData = res;
-//         _state.graphData = this.generateGraphData(res);
-//         this.addSongToHistory(res);
-//         this.setState(_state);
-//     });
-// }
 export const fetchSongData = (u, s) => dispatch => {
     const targetUrl = `https://soundcloud.com/${u}/${s}`;
     dispatch(fetchSongDataBegin());
