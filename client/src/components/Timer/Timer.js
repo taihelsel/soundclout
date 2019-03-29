@@ -5,6 +5,9 @@ class Timer extends Component {
     componentWillMount = () => {
         this.convertTime();
     }
+    componentDidUpdate(prevProps) {
+        if (prevProps.timeLeft !== this.props.timeLeft) this.updateTimer();
+    }
     convertTime = () => {
         //CURRENTLY CONVERTING TO SECONDS. MAY WANT TO CHANGE IN THE FUTURE.
         const diff = this.props.endTime - this.props.startTime;
@@ -28,7 +31,6 @@ class Timer extends Component {
         return `00:${min}:${sec}`;
     }
     render() {
-        this.updateTimer();
         return (
             <div className="timer-wrapper">
                 <h1 className="timer-label">{this.props.preLabel} {this.formatTime(this.props.timeLeft)} {this.props.postLabel}</h1>
