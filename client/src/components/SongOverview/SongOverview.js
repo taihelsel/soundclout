@@ -1,53 +1,24 @@
 import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
+import { connect } from "react-redux";
+import { fetchSongData } from "../../actions/songDataActions";
 import "./SongOverview.css";
 //Components
 import LoadingWheel from "../LoadingWheel/LoadingWheel.js";
 import Nav from "../Nav/Nav.js";
 import Timer from "../Timer/Timer.js";
 class SongOverview extends Component {
-    state = {
-        songData: {}, //response from the back end containing all the song information
-        graphData: [], //an array of datasets formatted for the react-chartjs-2
-        dataFetched: false, //false will render loading wheel. true renders songoverview
-        u: "",
-        s: "",
-    }
     componentDidMount() {
         const u = this.props.match.params.u;
         const s = this.props.match.params.s;
-        this.fetchSongData(u, s);
+        this.props.dispatch(fetchSongData(u, s));
     }
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.location.pathname !== this.props.location.pathname) {
             const u = this.props.match.params.u;
             const s = this.props.match.params.s;
-            this.setState({ dataFetched: false });
-            this.fetchSongData(u, s);
+            this.props.dispatch(fetchSongData(u, s));
         }
-    }
-    fetchSongData = (u, s) => {
-        const targetUrl = `https://soundcloud.com/${u}/${s}`;
-        fetch("/songdata", {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ targetUrl })
-        })
-            .then((res) => res.json())
-            .then((res) => {
-                res.lastUpdated = new Date(res.lastUpdated).getTime();
-                const _state = this.state;
-                _state.dataFetched = true;
-                _state.u = u;
-                _state.s = s;
-                _state.songData = res;
-                _state.graphData = this.generateGraphData(res);
-                this.addSongToHistory(res);
-                this.setState(_state);
-            });
     }
     addSongToHistory = (songData) => {
         // check if key is in store
@@ -155,28 +126,37 @@ class SongOverview extends Component {
         );
     }
     onTimerEnd = () => {
-        const _state = this.state;
-        _state.dataFetched = false;
-        this.setState(_state);
-        this.fetchSongData(this.state.u, this.state.s);
+        const u = this.props.match.params.u;
+        const s = this.props.match.params.s;
+        this.props.dispatch(fetchSongData(u, s));
     }
     render() {
         return (
             <section id="SongOverview">
                 <Nav history={this.props.history} />
-                {this.state.dataFetched ?
-                    (<div>
-                        <div id="song-iframe-wrapper">
-                            <iframe id="song-iframe" scrolling="no" frameborder="no" allow="autoplay" src={`https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${this.state.songData.songId}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true`}></iframe>
-                        </div>
-                        {this.renderGraphs()}
-                        <Timer onEnd={this.onTimerEnd} preLabel={"Updating in "} postLabel={""} startTime={Date.now()} endTime={this.state.songData.lastUpdated + this.state.songData.offsetTimer} />
-                    </div>)
-                    : (<LoadingWheel />)
+                {
+                    this.props.loading ?
+                        (<LoadingWheel />) :
+                        this.props.error ?
+                            <div>Error {this.props.error}</div> :
+                            <div>
+                                <div id="song-iframe-wrapper">
+                                    <iframe id="song-iframe" scrolling="no" frameborder="no" allow="autoplay" src={`https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${this.props.songData.songId}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true`}></iframe>
+                                </div>
+                                {/* {this.renderGraphs()} */}
+                                <Timer onEnd={this.onTimerEnd} preLabel={"Updating in "} postLabel={""} startTime={Date.now()} endTime={this.props.songData.lastUpdated + this.props.songData.offsetTimer} />
+                            </div>
                 }
             </section>
         );
     }
 }
 
-export default SongOverview;
+const mapStateToProps = state => ({
+    songData: state.songData.fetchedData,
+    loading: state.songData.loading,
+    error: state.songData.error
+});
+
+export default connect(mapStateToProps)(SongOverview);
+
