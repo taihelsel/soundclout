@@ -89,6 +89,9 @@ fetch("/songdata", {
 - CSS
 - JavaScript
 - ReactJS
+- redux
+- react-redux
+- thunk
 - React Router
 - Chart.js
 - React Chart.js 2
@@ -103,6 +106,5 @@ fetch("/songdata", {
 - Error handling on songdata req to soundcloud
 - Error handling on songdata db query
 - Error messages being sent to front-end
-- Implement redux
 - Create a react-native version that requests data from this version 
 
