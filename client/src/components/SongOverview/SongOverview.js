@@ -12,6 +12,7 @@ class SongOverview extends Component {
         const u = this.props.match.params.u;
         const s = this.props.match.params.s;
         this.props.dispatch(fetchSongData(u, s));
+        if (typeof this.props.songData !== "undefined" && typeof this.props.songData.title !== "undefined") this.addSongToHistory(this.props.songData);
     }
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.location.pathname !== this.props.location.pathname) {
@@ -19,6 +20,7 @@ class SongOverview extends Component {
             const s = this.props.match.params.s;
             this.props.dispatch(fetchSongData(u, s));
         }
+        if (typeof this.props.songData !== "undefined" && typeof this.props.songData.title !== "undefined" && prevProps.songData.title !== this.props.songData.title) this.addSongToHistory(this.props.songData);
     }
     addSongToHistory = (songData) => {
         // check if key is in store
